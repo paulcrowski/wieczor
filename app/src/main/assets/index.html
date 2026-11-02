@@ -83,6 +83,20 @@ textarea{min-height:52px;overflow:hidden}
 .thought .txt{white-space:pre-wrap;word-wrap:break-word}
 .kind{display:inline-block;background:var(--sage-soft);color:var(--sage);border-radius:6px;padding:0 7px;font-size:.76rem;margin-left:4px}
 .empty{color:var(--muted);text-align:center;padding:22px 8px;font-size:.95rem}
+.banner{background:var(--sage-soft);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:.92rem}
+.banner b{font-weight:600}
+.banner button{margin-top:8px}
+.qa{padding:10px 2px;border-bottom:1px solid var(--line)}
+.qa:last-child{border-bottom:0}
+.qa .q{color:var(--muted);font-size:.82rem}
+.qa .a{white-space:pre-wrap;word-wrap:break-word}
+.word{background:var(--yellow-soft);border-radius:999px;padding:4px 11px;font-size:.88rem}
+.word span{color:var(--muted);font-size:.78rem;margin-left:4px}
+.myq{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.myq div{flex:1}
+.myq button{border:0;background:transparent;color:var(--muted);font-size:1.1rem;padding:0 6px}
+.planrow{display:flex;align-items:baseline;gap:8px}
+.planrow span{color:var(--muted);font-size:.9rem;flex:0 0 46px}
 
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
@@ -132,7 +146,8 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
   </div>
   <div style="text-align:center"><button class="today-link" id="goToday" style="display:none">↩ Wróć do dziś</button></div>
   <p class="quote">Kilka słów wystarczy. Nie wiesz, to pomiń.</p>
-  <p class="sub" style="text-align:center;margin:-12px 0 14px;font-size:.75rem">wersja 2.0 · 100 pytań</p>
+  <div id="eveBanner"></div>
+  <p class="sub" style="text-align:center;margin:-12px 0 14px;font-size:.75rem">wersja 2.1 · 100 pytań</p>
 
   <div id="qs"></div>
   <button class="btn ghost" id="addQ" style="margin-bottom:12px">+ dolosuj pytanie</button>
@@ -180,9 +195,62 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
   </div>
 </section>
 
+<!-- TYDZIEŃ -->
+<section class="view" id="v-tydzien">
+  <div class="dayhead">
+    <button class="iconbtn" id="prevWeek" aria-label="Poprzedni tydzień">‹</button>
+    <div class="t"><h1 id="weekTitle">Ten tydzień</h1><div class="sub" id="weekSub"></div><span class="status" id="weekStatus"></span></div>
+    <button class="iconbtn" id="nextWeek" aria-label="Następny tydzień">›</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="wDays">0</b><span>wieczorów</span></div>
+    <div class="stat"><b id="wAns">0</b><span>odpowiedzi</span></div>
+    <div class="stat"><b id="wThoughts">0</b><span>myśli</span></div>
+  </div>
+
+  <div class="card" id="planCheck" style="display:none">
+    <h2>Plan na ten tydzień</h2>
+    <p class="hint" id="planCheckText" style="font-size:1rem;color:var(--ink)"></p>
+    <div class="chips" id="planResult"></div>
+  </div>
+
+  <div class="card yellow">
+    <h2>Co wraca</h2>
+    <p class="hint">Słowa, które padły w tym tygodniu co najmniej dwa razy.</p>
+    <div class="chips" id="weekWords"></div>
+  </div>
+  <div class="card"><h2>Pod lupą</h2><div id="weekLupa"></div></div>
+  <div class="card"><h2>Feed</h2><div id="weekFeed"></div></div>
+  <div class="card"><h2>Inne odpowiedzi</h2><div id="weekOther"></div></div>
+  <div class="card"><h2>Myśli</h2><div id="weekThoughts"></div></div>
+
+  <h1 style="margin:26px 0 12px;font-size:1.3rem">Podsumowanie</h1>
+  <div class="card">
+    <h2>Co się w tym tygodniu powtarzało?</h2>
+    <p class="hint">Spójrz na „Co wraca” i odpowiedzi wyżej.</p>
+    <textarea data-w="repeat" rows="1" placeholder="Kilka słów…"></textarea>
+  </div>
+  <div class="card">
+    <h2>Opisz ten tydzień jednym zdaniem, w trzeciej osobie</h2>
+    <p class="hint">Na przykład: „Ania w tym tygodniu…”. Z boku łatwiej zobaczyć, co się działo.</p>
+    <textarea data-w="third" rows="1" placeholder="… w tym tygodniu"></textarea>
+  </div>
+  <div class="card">
+    <h2>W czym mogę się mylić?</h2>
+    <p class="hint">Weź jedną opinię albo założenie z tego tygodnia. Co by musiało się wydarzyć, żeby okazało się błędne?</p>
+    <textarea data-w="wrong" rows="1" placeholder="Kilka słów…"></textarea>
+  </div>
+  <div class="card">
+    <h2>Plan na przyszły tydzień</h2>
+    <p class="hint">Jedna rzecz w formie „kiedy…, to…”. Przez cały tydzień zobaczysz ją nad pytaniami.</p>
+    <div class="planrow"><span>Kiedy</span><textarea data-w="when" rows="1" placeholder="sięgam po telefon w łóżku"></textarea></div>
+    <div class="planrow"><span>to</span><textarea data-w="then" rows="1" placeholder="odkładam go na parapet"></textarea></div>
+  </div>
+</section>
+
 <!-- EKSPORT -->
 <section class="view" id="v-eksport">
-  <h1 style="margin:8px 0 16px">Eksport</h1>
+  <h1 style="margin:8px 0 16px">Więcej</h1>
   <div class="card">
     <div class="label" style="margin-top:0">Zakres</div>
     <div class="chips" id="exRange"></div>
@@ -207,6 +275,18 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
       <div><b style="font-weight:500">Zawsze jedno „pod lupą”</b><p class="hint" style="margin:0">W co uwierzyłem, co uznałem za oczywiste</p></div>
       <button class="switch" id="setLupa" aria-label="Pytanie pod lupą"></button>
     </div>
+    <div class="toggle" style="margin-top:12px">
+      <div><b style="font-weight:500">Zawsze jedno moje</b><p class="hint" style="margin:0">Działa, kiedy masz własne pytania</p></div>
+      <button class="switch" id="setMine" aria-label="Moje pytanie"></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Moje pytania</h2>
+    <p class="hint">Dopisz pytania, które chcesz sobie zadawać. Losują się razem z resztą.</p>
+    <div id="myQs"></div>
+    <textarea id="newQ" rows="1" placeholder="Wpisz pytanie…" style="margin-top:6px"></textarea>
+    <button class="btn ghost" id="addMyQ" style="margin-top:10px">Dodaj pytanie</button>
   </div>
 
   <div class="card">
@@ -230,7 +310,8 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
   <button data-tab="wieczor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>Wieczór</button>
   <button data-tab="mysl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>Myśl</button>
   <button data-tab="historia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Historia</button>
-  <button data-tab="eksport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>Eksport</button>
+  <button data-tab="tydzien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V11M10 20V5M15 20v-7M20 20V8"/></svg>Tydzień</button>
+  <button data-tab="eksport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>Więcej</button>
 </nav>
 
 <div class="sheet-bg" id="sheetBg"></div>
@@ -252,7 +333,7 @@ const $ = id => document.getElementById(id);
 const native = window.Android;
 
 // Pula pytań: [id, grupa, pytanie]. Id się nie zmieniają, bo odpowiedzi są do nich przypięte.
-const GROUPS = {f:"feed", k:"pod lupą", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
+const GROUPS = {x:"moje", f:"feed", k:"pod lupą", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
 const POOL = [
 ["f01","f","Jaki temat widziałem dziś najczęściej?"],
 ["f02","f","Co z telefonu pamiętam z dzisiaj?"],
@@ -405,6 +486,7 @@ function openTab(t){
   if (t === "mysl") { renderRecent(); setTimeout(()=>$("tText").focus(), 150); }
   if (t === "historia") renderHistory();
   if (t === "eksport") renderExport();
+  if (t === "tydzien") { if (!keepWeek) curWeek = weekStart(todayKey()); keepWeek = false; renderWeek(); }
 }
 window.openTab = openTab;
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => openTab(b.dataset.tab));
@@ -418,7 +500,10 @@ window.handleBack = function(){
 let curDay = todayKey(), keepDay = false;
 // Stare wpisy (3 stałe pytania) zamieniamy na listę pytań z odpowiedziami.
 const LEGACY = {L1:"Czego dziś chciałem, a nie zrobiłem?", L2:"Co dziś najczęściej mi pokazywano? (żółty)", L3:"Czy zrobiłem coś, czego feed by mi nie podsunął?"};
-const Q = Object.fromEntries(POOL.map(([id,g,q]) => [id,{g,q}]));
+let Q = {};
+function allPool(){ return POOL.concat((db.custom || []).map(c => [c.id, "x", c.q])); }
+function rebuildQ(){ Q = Object.fromEntries(allPool().map(([id,g,q]) => [id,{g,q}])); }
+rebuildQ();
 function migrate(){
   Object.entries(db.evenings).forEach(([k,e]) => {
     if (e.items) return;
@@ -437,15 +522,16 @@ function rng(seedStr){
   return () => { h = Math.imul(h ^ h>>>16, 2246822507); h = Math.imul(h ^ h>>>13, 3266489909); return ((h ^= h>>>16) >>> 0) / 4294967296; };
 }
 function pick(arr, r){ return arr[Math.floor(r()*arr.length)]; }
-function settings(){ return Object.assign({count:4, feed:true, lupa:true}, db.settings || {}); }
+function settings(){ return Object.assign({count:4, feed:true, lupa:true, mine:true}, db.settings || {}); }
 function drawDay(k){
   const r = rng("wieczor-"+k), st = settings();
-  const fixed = [st.feed && "f", st.lupa && "k"].filter(Boolean).slice(0, st.count);
-  const ids = fixed.map(g => pick(POOL.filter(p=>p[1]===g), r)[0]);
-  const groups = Object.keys(GROUPS).filter(g=>!fixed.includes(g));
+  const P = allPool(), has = g => P.some(p => p[1]===g);
+  const fixed = [st.mine && has("x") && "x", st.feed && "f", st.lupa && "k"].filter(Boolean).slice(0, st.count);
+  const ids = fixed.map(g => pick(P.filter(p=>p[1]===g), r)[0]);
+  const groups = Object.keys(GROUPS).filter(g => !fixed.includes(g) && has(g));
   while (ids.length < st.count && groups.length) {
     const g = groups.splice(Math.floor(r()*groups.length),1)[0];
-    ids.push(pick(POOL.filter(p=>p[1]===g), r)[0]);
+    ids.push(pick(P.filter(p=>p[1]===g), r)[0]);
   }
   return ids.map(id => ({id, q:Q[id].q, a:""}));
 }
@@ -466,6 +552,7 @@ function renderEvening(){
   $("nextDay").disabled = curDay >= t;
   $("goToday").style.display = curDay === t ? "none" : "inline-block";
   showDayStatus();
+  renderBanner();
   renderQuestions();
   const list = db.thoughts.filter(x => eveningKey(x.ts) === curDay).sort((a,b)=>a.ts-b.ts);
   $("dayThoughts").innerHTML = list.length ? list.map(thoughtHtml).join("") : '<div class="empty">Jeszcze nic.</div>';
@@ -473,7 +560,7 @@ function renderEvening(){
 function renderQuestions(){
   const its = items(curDay);
   $("qs").innerHTML = its.map((x,i) => {
-    const g = Q[x.id] ? GROUPS[Q[x.id].g] : "wcześniejsze pytanie";
+    const g = Q[x.id] ? GROUPS[Q[x.id].g] : x.id.startsWith("x") ? "moje" : "wcześniejsze pytanie";
     return `<div class="card qcard${Q[x.id] && (Q[x.id].g==="f" || Q[x.id].g==="k") ? " feed" : ""}${x.skip?" skipped":""}" data-i="${i}">
       <div class="qgroup">${i+1} · ${g}${x.skip?" · pominięte":""}</div>
       <h2>${esc(x.q)}</h2>
@@ -499,8 +586,8 @@ $("qs").addEventListener("click", e => {
     if (x.a && x.a.trim() && !confirm("Zmienić pytanie? Odpowiedź zniknie.")) return;
     const used = new Set(its.map(y=>y.id));
     const g = Q[x.id] ? Q[x.id].g : null;
-    let pool = POOL.filter(p => p[1]===g && !used.has(p[0]));
-    if (!pool.length) pool = POOL.filter(p => !used.has(p[0]));
+    let pool = allPool().filter(p => p[1]===g && !used.has(p[0]));
+    if (!pool.length) pool = allPool().filter(p => !used.has(p[0]));
     const n = pick(pool, Math.random);
     its[i] = {id:n[0], q:n[2], a:""};
   }
@@ -509,7 +596,7 @@ $("qs").addEventListener("click", e => {
 });
 $("addQ").onclick = () => {
   const its = items(curDay), used = new Set(its.map(y=>y.id));
-  const n = pick(POOL.filter(p => !used.has(p[0])), Math.random);
+  const n = pick(allPool().filter(p => !used.has(p[0])), Math.random);
   its.push({id:n[0], q:n[2], a:""});
   setItems(curDay, its, true);
   renderQuestions();
@@ -575,7 +662,7 @@ function openSheet(id){
   setTimeout(()=>grow($("eText")),30);
 }
 function closeSheet(){ $("sheetBg").classList.remove("on"); $("sheet").classList.remove("on"); editId=null; }
-function rerender(){ openTab(tab === "wieczor" ? (keepDay=true,"wieczor") : tab); }
+function rerender(){ if (tab === "wieczor") keepDay = true; if (tab === "tydzien") keepWeek = true; openTab(tab); }
 $("sheetBg").onclick = closeSheet;
 $("eSave").onclick = () => {
   const x = db.thoughts.find(t => t.id === editId);
@@ -585,6 +672,79 @@ $("eSave").onclick = () => {
 $("eDel").onclick = () => {
   if (!confirm("Usunąć tę myśl?")) return;
   db.thoughts = db.thoughts.filter(t => t.id !== editId); persist(); closeSheet(); rerender();
+};
+
+
+// ---------- tydzień ----------
+const WEEK_FIELDS = [["repeat","Co się powtarzało"],["third","Ten tydzień w trzeciej osobie"],["wrong","W czym mogę się mylić"]];
+const STOP = new Set("jest było były była będzie dziś dzisiaj tego tylko który która które jako przez bardzo mnie mój moja moje sobie jeszcze kiedy więc czyli także żeby może mogę jakieś jakiś coś nic tak tam tutaj teraz potem miałem chciałem zrobiłem oraz gdzie czym czego jego jej nich nimi dlatego jednak trochę wiem tych tym taki takie temu ponieważ bardziej wszystko kilka razy dużo mało albo czy aby bez dla jak już ale lub żebym mam miał było zrobić robić robiłem mogłem chyba więcej mniej zawsze nigdy też tego tej ten ta to tu".split(" "));
+let curWeek = null, keepWeek = false;
+function weekStart(k){ const d = parseKey(k); d.setDate(d.getDate() - ((d.getDay()+6)%7)); return keyOf(d); }
+function weekDays(ws){ return [0,1,2,3,4,5,6].map(i => shiftKey(ws,i)); }
+function wk(ws){ return (db.weeks && db.weeks[ws]) || {}; }
+function setWk(ws, patch){
+  db.weeks = db.weeks || {};
+  db.weeks[ws] = Object.assign(wk(ws), patch, {updated: Date.now()});
+  clearTimeout(setWk.t);
+  $("weekStatus").textContent = "zapisuję…";
+  setWk.t = setTimeout(() => { if (persist()) $("weekStatus").textContent = "✓ zapisane · " + fmtTime.format(new Date()); }, 300);
+}
+function planText(w){ return (w.when || w.then) ? `Kiedy ${w.when || "…"}, to ${w.then || "…"}.` : ""; }
+function renderBanner(){
+  const ws = weekStart(curDay), prev = wk(shiftKey(ws,-7)), plan = planText(prev);
+  const isSunday = parseKey(curDay).getDay() === 0, cur = wk(ws);
+  let h = "";
+  if (plan) h += `<div class="banner"><b>Plan na ten tydzień:</b> ${esc(plan)}</div>`;
+  if (isSunday && !cur.repeat && !cur.when) h += `<div class="banner">Niedziela. Zajrzyj w podsumowanie tygodnia.<br><button class="today-link" onclick="keepWeek=true;curWeek='${ws}';openTab('tydzien')">Podsumuj tydzień →</button></div>`;
+  $("eveBanner").innerHTML = h;
+}
+function qaHtml(k, x){ return `<div class="qa" data-day="${k}"><div class="q">${esc(cap(fmtShort.format(parseKey(k))))} · ${esc(x.q)}</div><div class="a">${esc(x.a)}</div></div>`; }
+function renderWeek(){
+  const ws = curWeek, days = weekDays(ws), thisWs = weekStart(todayKey());
+  $("weekTitle").textContent = ws === thisWs ? "Ten tydzień" : ws === shiftKey(thisWs,-7) ? "Poprzedni tydzień" : "Tydzień";
+  $("weekSub").textContent = fmtShort.format(parseKey(ws)) + " – " + fmtShort.format(parseKey(shiftKey(ws,6)));
+  $("nextWeek").disabled = ws >= thisWs;
+  const w = wk(ws);
+  $("weekStatus").textContent = w.updated ? "✓ zapisane · " + fmtTime.format(new Date(w.updated)) : "";
+  const evs = days.filter(k => db.evenings[k]);
+  const answered = [];
+  evs.forEach(k => db.evenings[k].items.forEach(x => { if (x.a && x.a.trim()) answered.push([k,x]); }));
+  const thoughts = db.thoughts.filter(t => days.includes(eveningKey(t.ts))).sort((a,b)=>a.ts-b.ts);
+  $("wDays").textContent = evs.length + "/7"; $("wAns").textContent = answered.length; $("wThoughts").textContent = thoughts.length;
+
+  const prevPlan = planText(wk(shiftKey(ws,-7)));
+  $("planCheck").style.display = prevPlan ? "block" : "none";
+  if (prevPlan) {
+    $("planCheckText").textContent = prevPlan;
+    $("planResult").innerHTML = ["udało się","częściowo","nie udało się"].map(v => `<button class="chip${w.planResult===v?" on":""}" data-v="${v}">${v}</button>`).join("");
+    $("planResult").querySelectorAll("[data-v]").forEach(b => b.onclick = () => { setWk(ws, {planResult: w.planResult===b.dataset.v ? "" : b.dataset.v}); renderWeek(); });
+  }
+
+  const counts = {};
+  answered.map(([k,x]) => x.a).concat(thoughts.map(t => t.text)).join(" ").toLowerCase().split(/[^\p{L}]+/u)
+    .filter(t => t.length >= 4 && !STOP.has(t)).forEach(t => counts[t] = (counts[t]||0)+1);
+  const top = Object.entries(counts).filter(([,c]) => c >= 2).sort((a,b)=>b[1]-a[1]).slice(0,14);
+  $("weekWords").innerHTML = top.length ? top.map(([t,c]) => `<span class="word">${esc(t)}<span>${c}</span></span>`).join("") : '<p class="hint" style="margin:0">Jeszcze nic się nie powtórzyło.</p>';
+
+  const group = x => Q[x.id] ? Q[x.id].g : (x.id === "L2" || x.id === "L3") ? "f" : "";
+  const list = (arr, empty) => arr.length ? arr.map(([k,x]) => qaHtml(k,x)).join("") : `<div class="empty">${empty}</div>`;
+  $("weekLupa").innerHTML = list(answered.filter(([,x]) => group(x)==="k"), "Brak odpowiedzi w tym tygodniu.");
+  $("weekFeed").innerHTML = list(answered.filter(([,x]) => group(x)==="f"), "Brak odpowiedzi w tym tygodniu.");
+  $("weekOther").innerHTML = list(answered.filter(([,x]) => group(x)!=="k" && group(x)!=="f"), "Brak odpowiedzi w tym tygodniu.");
+  $("weekThoughts").innerHTML = thoughts.length ? thoughts.map(thoughtHtml).join("") : '<div class="empty">Brak myśli w tym tygodniu.</div>';
+
+  document.querySelectorAll("[data-w]").forEach(t => { t.value = w[t.dataset.w] || ""; grow(t); });
+  document.querySelectorAll("#v-tydzien .qa[data-day]").forEach(d => d.onclick = () => { curDay = d.dataset.day; keepDay = true; openTab("wieczor"); });
+}
+document.querySelectorAll("[data-w]").forEach(t => t.addEventListener("input", () => setWk(curWeek, {[t.dataset.w]: t.value})));
+$("prevWeek").onclick = () => { curWeek = shiftKey(curWeek,-7); renderWeek(); window.scrollTo(0,0); };
+$("nextWeek").onclick = () => { if (curWeek < weekStart(todayKey())) { curWeek = shiftKey(curWeek,7); renderWeek(); window.scrollTo(0,0); } };
+
+$("addMyQ").onclick = () => {
+  const q = $("newQ").value.trim(); if (!q) { $("newQ").focus(); return; }
+  db.custom = (db.custom || []).concat([{id: "x" + Date.now().toString(36), q}]);
+  rebuildQ(); persist(); $("newQ").value = ""; grow($("newQ")); renderExport();
+  if (native) native.toast("Dodane");
 };
 
 // ---------- historia ----------
@@ -636,6 +796,14 @@ function renderExport(){
   $("setLupa").classList.toggle("on", st.lupa);
   $("setFeed").onclick = () => { db.settings = Object.assign(st, {feed:!st.feed}); persist(); renderExport(); };
   $("setLupa").onclick = () => { db.settings = Object.assign(st, {lupa:!st.lupa}); persist(); renderExport(); };
+  $("setMine").classList.toggle("on", st.mine);
+  $("setMine").onclick = () => { db.settings = Object.assign(st, {mine:!st.mine}); persist(); renderExport(); };
+  const mine = db.custom || [];
+  $("myQs").innerHTML = mine.length ? mine.map(c => `<div class="myq"><div>${esc(c.q)}</div><button data-del="${c.id}" aria-label="Usuń">✕</button></div>`).join("") : '<p class="hint" style="margin:0">Na razie brak.</p>';
+  $("myQs").querySelectorAll("[data-del]").forEach(b => b.onclick = () => {
+    if (!confirm("Usunąć to pytanie? Stare odpowiedzi na nie zostaną.")) return;
+    db.custom = mine.filter(c => c.id !== b.dataset.del); rebuildQ(); persist(); renderExport();
+  });
   const rem = loadRem();
   $("remSwitch").classList.toggle("on", rem.on);
   $("remTime").value = rem.time;
@@ -644,14 +812,15 @@ function collect(){
   const from = exRange ? shiftKey(todayKey(), -(exRange-1)) : "0000";
   const days = Object.keys(db.evenings).filter(k => k >= from).sort();
   const thoughts = db.thoughts.filter(t => eveningKey(t.ts) >= from).sort((a,b)=>a.ts-b.ts);
-  return {from, days, thoughts};
+  const weeks = Object.keys(db.weeks || {}).filter(k => shiftKey(k,6) >= from).sort();
+  return {from, days, thoughts, weeks};
 }
 function csvCell(v){ v = v==null ? "" : String(v); return /[",\n;]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
 function csv(rows){ return "﻿" + rows.map(r => r.map(csvCell).join(",")).join("\n") + "\n"; }
 function build(){
   const r = collect(), stamp = todayKey();
   if (exFormat === "json") {
-    const data = exRange ? {version:1, evenings:Object.fromEntries(r.days.map(k=>[k,db.evenings[k]])), thoughts:r.thoughts} : db;
+    const data = exRange ? {version:1, evenings:Object.fromEntries(r.days.map(k=>[k,db.evenings[k]])), thoughts:r.thoughts, weeks:Object.fromEntries(r.weeks.map(k=>[k,db.weeks[k]])), custom:db.custom||[]} : db;
     return {name:`wieczor-kopia-${stamp}.json`, mime:"application/json", body: JSON.stringify(data, null, 2)};
   }
   if (exFormat === "csv-e") {
@@ -680,6 +849,13 @@ function build(){
       md += "\n";
     }
   });
+  r.weeks.forEach(k => {
+    const w = db.weeks[k];
+    md += `\n## Tydzień ${k} - ${shiftKey(k,6)}\n\n`;
+    WEEK_FIELDS.forEach(([f,label]) => { if (w[f] && w[f].trim()) md += `**${label}**\n${w[f].trim()}\n\n`; });
+    if (w.when || w.then) md += `**Plan:** kiedy ${w.when||"…"}, to ${w.then||"…"}\n\n`;
+    if (w.planResult) md += `**Plan z poprzedniego tygodnia:** ${w.planResult}\n\n`;
+  });
   return {name:`wieczory-${stamp}.md`, mime:"text/markdown", body: md};
 }
 function download(f){
@@ -699,6 +875,11 @@ $("importFile").onchange = e => {
       Object.entries(d.evenings || {}).forEach(([k,v]) => { const cur = db.evenings[k]; if (!cur || (v.updated||0) > (cur.updated||0)) { db.evenings[k] = v; ne++; } });
       const ids = new Set(db.thoughts.map(t=>t.id));
       (d.thoughts || []).forEach(t => { if (t && t.id && !ids.has(t.id)) { db.thoughts.push(t); nt++; } });
+      db.weeks = db.weeks || {};
+      Object.entries(d.weeks || {}).forEach(([k,v]) => { const cur = db.weeks[k]; if (!cur || (v.updated||0) > (cur.updated||0)) db.weeks[k] = v; });
+      const cids = new Set((db.custom||[]).map(c=>c.id));
+      db.custom = (db.custom||[]).concat((d.custom||[]).filter(c => c && c.id && !cids.has(c.id)));
+      rebuildQ();
       migrate(); persist(); renderExport();
       alert(`Zaimportowano: ${ne} wieczorów, ${nt} myśli.`);
     } catch(err) { alert("To nie wygląda na plik kopii z tej aplikacji."); }
@@ -721,6 +902,7 @@ $("remTime").onchange = () => { const r = loadRem(); applyRem({on:r.on, time:$("
 // ---------- start ----------
 loadDb();
 migrate();
+rebuildQ();
 openTab((location.hash||"#wieczor").slice(1));
 </script>
 </body>

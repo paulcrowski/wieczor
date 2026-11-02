@@ -15,7 +15,9 @@ Napisałem ją dla siebie, do prywatnego badania tego, jak feed wpływa na mój 
 - **Wieczór**: domyślnie 4 pytania na dzień, jedno o feedzie i jedno „pod lupą”. Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania.
 - **Myśl**: szybki zapis jednej myśli w ciągu dnia (pomysł, coś przeczytanego, coś do dopisania). Na ikonie aplikacji jest skrót „Złap myśl”.
 - **Historia**: wszystkie dni z odpowiedziami. Dotknięcie dnia otwiera go do poprawek.
-- **Eksport**: Markdown do czytania, CSV do analizy (jeden wiersz to jedna odpowiedź), JSON jako kopia zapasowa. Plik można udostępnić albo zapisać w Plikach.
+- **Tydzień**: odpowiedzi z tygodnia obok siebie, osobno „pod lupą” i feed. Pokazuje słowa, które padły co najmniej dwa razy. Na końcu trzy pytania podsumowania i plan na kolejny tydzień w formie „kiedy…, to…”. Plan wisi potem nad pytaniami przez cały następny tydzień, a w kolejnym podsumowaniu zaznaczasz, czy wyszło. W niedzielę aplikacja przypomina o podsumowaniu.
+- **Moje pytania**: w zakładce Więcej dopisujesz własne pytania. Losują się razem z resztą, a jedno z nich może być w każdym losowaniu.
+- **Eksport** (zakładka Więcej): Markdown do czytania, CSV do analizy (jeden wiersz to jedna odpowiedź), JSON jako kopia zapasowa. Plik można udostępnić albo zapisać w Plikach.
 - **Przypomnienie**: jedno powiadomienie dziennie o wybranej godzinie.
 
 Wpis zrobiony między północą a 4:00 liczy się do poprzedniego wieczoru.
@@ -30,11 +32,25 @@ Uprawnienia: powiadomienia (przypomnienie) i start po włączeniu telefonu (żeb
 
 ## Instalacja
 
-1. Pobierz `Wieczor-v2.0.apk` z zakładki Releases.
+1. Pobierz `Wieczor-v2.1.apk` z zakładki Releases.
 2. Otwórz plik na telefonie. Android zapyta o zgodę na instalację z tego źródła.
 3. Jeśli pojawi się ostrzeżenie Play Protect, wybierz „Zainstaluj mimo to”. Pojawia się, bo aplikacji nie ma w Sklepie Play.
 
 Wymaga Androida 8.0 lub nowszego.
+
+## Na czym to stoi
+
+Aplikacja nie jest terapią i nie obiecuje przemiany. Kilka badań stoi za tym, jak jest zbudowana:
+
+- **Wieczorne pisanie o dniu pomaga się uczyć.** W eksperymencie w call center pracownicy, którzy pod koniec dnia przez 15 minut pisali o tym, czego się nauczyli, wypadli w końcowym teście szkolenia o ok. 23% lepiej niż grupa kontrolna (Di Stefano, Gino, Pisano, Staats, 2014, working paper HBS 14-093).
+- **Pytania „co”, nie „dlaczego”.** „Dlaczego” zachęca do zgadywania przyczyn, których nie widać, i do kręcenia się w kółko. Prawie wszystkie pytania pytają o fakt z dnia. Uwaga: ta rada pochodzi głównie z książki Tashy Eurich „Insight”, a jej dane są korelacyjne.
+- **Powtarzanie zwiększa wiarę w twierdzenie, nawet gdy wiemy, że jest fałszywe** (efekt iluzji prawdy; Fazio i in., 2015, *Journal of Experimental Psychology: General*). Stąd pytania „pod lupą”, takie jak „Z jaką opinią zgodziłem się dziś głównie dlatego, że była wszędzie?”.
+- **„Rozważ przeciwieństwo” zmniejsza stronniczość ocen,** i to bardziej niż samo postanowienie, żeby być obiektywnym (Lord, Lepper, Preston, 1984, *JPSP*). Stąd pytanie tygodniowe „W czym mogę się mylić?”.
+- **Spojrzenie z boku zmniejsza zamartwianie się.** Ludzie, którzy analizowali przykre wydarzenie z perspektywy obserwatora, mniej je potem przeżuwali (Kross, Ayduk, Mischel, 2005). Stąd opis tygodnia w trzeciej osobie.
+- **Samo śledzenie zwiększa świadomość, ale rzadko zmienia zachowanie.** W badaniu Zimmermanna (2021, N = 242) liczniki czasu ekranowego poprawiały wiedzę o własnym używaniu telefonu, a jego czas spadał rzadko. Zmianę dają dopiero konkretne plany i utrudnienia.
+- **Plan „kiedy X, to Y” działa.** Metaanaliza 94 testów pokazała średni do dużego efekt na realizację celów (d = 0,65; Gollwitzer i Sheeran, 2006). Dlatego tydzień kończy się jednym takim planem, a jego wynik sprawdzasz tydzień później.
+
+Pisanie o sobie ma w badaniach mały efekt na zdrowie i samopoczucie (r = 0,075 w metaanalizie 146 badań; Frattaroli, 2006). Nie warto oczekiwać od niego więcej niż od kilku minut uwagi dziennie.
 
 ## Kod
 
