@@ -8,11 +8,11 @@ Aplikacja na Androida do wieczornych pytań. Co wieczór losuje kilka pytań ze 
 
 Odpowiadasz kilkoma słowami albo pomijasz. Zajmuje to parę minut.
 
-Napisałem ją dla siebie, do prywatnego badania tego, jak feed wpływa na mój dzień. Pytania o telefon i o rzeczy przyjęte bez sprawdzania okazały się najciekawsze, więc są w każdym losowaniu (można to wyłączyć).
+Napisałem ją dla siebie, do prywatnego badania tego, jak feed wpływa na mój dzień. Pytanie o telefon i pytanie o to, co było dobre, są w każdym losowaniu (można to zmienić).
 
 ## Co umie
 
-- **Wieczór**: domyślnie 5 pytań na dzień: jedno o feedzie, jedno o tym, co było dobre, jedno „pod lupą” i dwa z pozostałych grup (dzień, uwaga, ciało, ludzie, świat wokół, ciekawość i inne). Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania.
+- **Wieczór**: domyślnie 4 pytania na dzień: jedno o feedzie, jedno o tym, co było dobre, i dwa z pozostałych grup, np. „pod lupą”, świat wokół, ciekawość, ludzie. Liczbę pytań i grupy stałe zmienisz w zakładce Więcej. Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania.
 - **Myśl**: szybki zapis jednej myśli w ciągu dnia (pomysł, coś przeczytanego, coś do dopisania). Na ikonie aplikacji jest skrót „Złap myśl”.
 - **Historia**: wszystkie dni z odpowiedziami. Dotknięcie dnia otwiera go do poprawek.
 - **Tydzień**: odpowiedzi z tygodnia obok siebie, osobno „pod lupą” i feed. Pokazuje słowa, które padły co najmniej dwa razy. Na końcu trzy pytania podsumowania i plan na kolejny tydzień w formie „kiedy…, to…”. Plan wisi potem nad pytaniami przez cały następny tydzień, a w kolejnym podsumowaniu zaznaczasz, czy wyszło. W niedzielę aplikacja przypomina o podsumowaniu.
@@ -32,7 +32,7 @@ Uprawnienia: powiadomienia (przypomnienie) i start po włączeniu telefonu (żeb
 
 ## Instalacja
 
-1. Pobierz `Wieczor-v2.2.apk` z zakładki Releases.
+1. Pobierz `Wieczor-v2.3.apk` z zakładki Releases.
 2. Otwórz plik na telefonie. Android zapyta o zgodę na instalację z tego źródła.
 3. Jeśli pojawi się ostrzeżenie Play Protect, wybierz „Zainstaluj mimo to”. Pojawia się, bo aplikacji nie ma w Sklepie Play.
 
