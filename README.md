@@ -1,6 +1,6 @@
 # Wieczór
 
-Aplikacja na Androida do wieczornych pytań. Co wieczór losuje kilka pytań ze stu, na przykład:
+Aplikacja na Androida do wieczornych pytań. Co wieczór losuje kilka pytań ze 145, na przykład:
 
 - O której pierwszy raz wziąłem dziś telefon?
 - W co dziś uwierzyłem bez sprawdzania?
@@ -12,7 +12,7 @@ Napisałem ją dla siebie, do prywatnego badania tego, jak feed wpływa na mój 
 
 ## Co umie
 
-- **Wieczór**: domyślnie 4 pytania na dzień, jedno o feedzie i jedno „pod lupą”. Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania.
+- **Wieczór**: domyślnie 5 pytań na dzień: jedno o feedzie, jedno o tym, co było dobre, jedno „pod lupą” i dwa z pozostałych grup (dzień, uwaga, ciało, ludzie, świat wokół, ciekawość i inne). Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania.
 - **Myśl**: szybki zapis jednej myśli w ciągu dnia (pomysł, coś przeczytanego, coś do dopisania). Na ikonie aplikacji jest skrót „Złap myśl”.
 - **Historia**: wszystkie dni z odpowiedziami. Dotknięcie dnia otwiera go do poprawek.
 - **Tydzień**: odpowiedzi z tygodnia obok siebie, osobno „pod lupą” i feed. Pokazuje słowa, które padły co najmniej dwa razy. Na końcu trzy pytania podsumowania i plan na kolejny tydzień w formie „kiedy…, to…”. Plan wisi potem nad pytaniami przez cały następny tydzień, a w kolejnym podsumowaniu zaznaczasz, czy wyszło. W niedzielę aplikacja przypomina o podsumowaniu.
@@ -32,7 +32,7 @@ Uprawnienia: powiadomienia (przypomnienie) i start po włączeniu telefonu (żeb
 
 ## Instalacja
 
-1. Pobierz `Wieczor-v2.1.apk` z zakładki Releases.
+1. Pobierz `Wieczor-v2.2.apk` z zakładki Releases.
 2. Otwórz plik na telefonie. Android zapyta o zgodę na instalację z tego źródła.
 3. Jeśli pojawi się ostrzeżenie Play Protect, wybierz „Zainstaluj mimo to”. Pojawia się, bo aplikacji nie ma w Sklepie Play.
 
@@ -93,6 +93,29 @@ Pytania są pisane w rodzaju męskim, bo pisałem je dla siebie. Wersja żeńska
 - Co dziś robiłem bez telefonu w ręce?
 - Co dziś kliknąłem, choć nie miałem zamiaru?
 
+### Dobre (20)
+
+- Co dziś poszło dobrze, choćby trochę?
+- Z czego się dziś ucieszyłem?
+- Co dobrego zrobiłem dziś dla kogoś?
+- Co ktoś zrobił dziś dla mnie?
+- Kiedy się dziś uśmiechnąłem?
+- Co robię dziś lepiej niż miesiąc temu?
+- Co mi dziś smakowało?
+- Która rozmowa była dziś dobra?
+- Co przyszło mi dziś łatwo?
+- Czego dziś nie zepsułem, choć mogłem?
+- Co mnie dziś uspokoiło?
+- Co dziś zrobiłem, z czego jutro rano będę zadowolony?
+- Kogo dziś dobrze wspominam?
+- Co było dziś lepsze niż wczoraj?
+- Co dziś dobrze zrobiło mojemu ciału?
+- Po czym dziś widać, że daję radę?
+- Za co pochwaliłbym kolegę, gdyby zrobił dziś to samo co ja?
+- Na co cieszę się jutro?
+- Co było dziś zabawne?
+- Co dziś zrobiłem dobrze, choć nikt tego nie widział?
+
 ### Pod lupą (15)
 
 - W co dziś uwierzyłem bez sprawdzania?
@@ -110,6 +133,37 @@ Pytania są pisane w rodzaju męskim, bo pisałem je dla siebie. Wersja żeńska
 - Co chciałem dziś kupić? Skąd ten pomysł?
 - Którą swoją opinię sprawdziłbym, gdybym miał na to godzinę?
 - Co dziś zrobiłem inaczej niż zwykle?
+
+### Świat wokół (15)
+
+- Co zauważyłem dziś po drodze, czego wcześniej nie widziałem?
+- Jakie było dziś niebo?
+- Co słyszałem, kiedy na chwilę się zatrzymałem?
+- Kogo obcego dziś zapamiętałem? Po czym?
+- Jak wyglądał mój dzień oczami osoby, która mieszka ze mną?
+- Co się dziś zmieniło za oknem albo w okolicy?
+- Jak pachniało dziś na dworze?
+- Co obejrzałem dziś z bliska: roślinę, owada, fakturę czegoś?
+- Jaki dzień mieli dziś ludzie wokół mnie?
+- Czego dowiedziałem się dziś o kimś bliskim?
+- Co bym tu dziś zauważył, gdybym był w tym miejscu pierwszy raz?
+- Jakiej muzyki dziś słuchałem? Kto ją wybrał: ja czy algorytm?
+- Co zrobiłem dziś wolniej niż zwykle?
+- Z kim się dziś zgodziłem, choć zwykle się nie zgadzamy?
+- Jaką pogodę dziś czułem na skórze?
+
+### Ciekawość (10)
+
+- Czego chciałem się dziś dowiedzieć?
+- O co zapytałbym dziś kogoś, kto zna się na rzeczy?
+- Co sprawdziłem dziś sam, zamiast przyjąć na słowo?
+- Czego nie rozumiem, a chciałbym?
+- Co zrobiłbym dziś, gdybym się nie bał wyjść na głupka?
+- O czym chętnie posłuchałbym godzinnego wykładu?
+- Czego mogę się nauczyć od kogoś, z kim się nie zgadzam?
+- Co wydało mi się dziś dziwne?
+- Czego jutro spróbuję pierwszy raz?
+- Jakie miejsce, książkę albo osobę chcę poznać?
 
 ### Dzień (15)
 

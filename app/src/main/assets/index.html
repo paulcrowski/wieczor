@@ -147,7 +147,7 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
   <div style="text-align:center"><button class="today-link" id="goToday" style="display:none">↩ Wróć do dziś</button></div>
   <p class="quote">Kilka słów wystarczy. Nie wiesz, to pomiń.</p>
   <div id="eveBanner"></div>
-  <p class="sub" style="text-align:center;margin:-12px 0 14px;font-size:.75rem">wersja 2.1 · 100 pytań</p>
+  <p class="sub" style="text-align:center;margin:-12px 0 14px;font-size:.75rem" id="verLine">wersja 2.2</p>
 
   <div id="qs"></div>
   <button class="btn ghost" id="addQ" style="margin-bottom:12px">+ dolosuj pytanie</button>
@@ -272,6 +272,10 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
       <button class="switch" id="setFeed" aria-label="Pytanie o feed"></button>
     </div>
     <div class="toggle" style="margin-top:12px">
+      <div><b style="font-weight:500">Zawsze jedno dobre</b><p class="hint" style="margin:0">Co dziś wyszło, co ucieszyło</p></div>
+      <button class="switch" id="setGood" aria-label="Pytanie dobre"></button>
+    </div>
+    <div class="toggle" style="margin-top:12px">
       <div><b style="font-weight:500">Zawsze jedno „pod lupą”</b><p class="hint" style="margin:0">W co uwierzyłem, co uznałem za oczywiste</p></div>
       <button class="switch" id="setLupa" aria-label="Pytanie pod lupą"></button>
     </div>
@@ -333,7 +337,7 @@ const $ = id => document.getElementById(id);
 const native = window.Android;
 
 // Pula pytań: [id, grupa, pytanie]. Id się nie zmieniają, bo odpowiedzi są do nich przypięte.
-const GROUPS = {x:"moje", f:"feed", k:"pod lupą", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
+const GROUPS = {x:"moje", f:"feed", g:"dobre", k:"pod lupą", s:"świat wokół", n:"ciekawość", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
 const POOL = [
 ["f01","f","Jaki temat widziałem dziś najczęściej?"],
 ["f02","f","Co z telefonu pamiętam z dzisiaj?"],
@@ -435,6 +439,51 @@ const POOL = [
 ["r07","r","Co dziś zrobiłem rękami?"],
 ["r08","r","Co dziś sprawdziłem z ciekawości?"],
 ["r09","r","Jaka drobna rzecz dziś wyszła?"],
+["g01","g","Co dziś poszło dobrze, choćby trochę?"],
+["g02","g","Z czego się dziś ucieszyłem?"],
+["g03","g","Co dobrego zrobiłem dziś dla kogoś?"],
+["g04","g","Co ktoś zrobił dziś dla mnie?"],
+["g05","g","Kiedy się dziś uśmiechnąłem?"],
+["g06","g","Co robię dziś lepiej niż miesiąc temu?"],
+["g07","g","Co mi dziś smakowało?"],
+["g08","g","Która rozmowa była dziś dobra?"],
+["g09","g","Co przyszło mi dziś łatwo?"],
+["g10","g","Czego dziś nie zepsułem, choć mogłem?"],
+["g11","g","Co mnie dziś uspokoiło?"],
+["g12","g","Co dziś zrobiłem, z czego jutro rano będę zadowolony?"],
+["g13","g","Kogo dziś dobrze wspominam?"],
+["g14","g","Co było dziś lepsze niż wczoraj?"],
+["g15","g","Co dziś dobrze zrobiło mojemu ciału?"],
+["g16","g","Po czym dziś widać, że daję radę?"],
+["g17","g","Za co pochwaliłbym kolegę, gdyby zrobił dziś to samo co ja?"],
+["g18","g","Na co cieszę się jutro?"],
+["g19","g","Co było dziś zabawne?"],
+["g20","g","Co dziś zrobiłem dobrze, choć nikt tego nie widział?"],
+["s01","s","Co zauważyłem dziś po drodze, czego wcześniej nie widziałem?"],
+["s02","s","Jakie było dziś niebo?"],
+["s03","s","Co słyszałem, kiedy na chwilę się zatrzymałem?"],
+["s04","s","Kogo obcego dziś zapamiętałem? Po czym?"],
+["s05","s","Jak wyglądał mój dzień oczami osoby, która mieszka ze mną?"],
+["s06","s","Co się dziś zmieniło za oknem albo w okolicy?"],
+["s07","s","Jak pachniało dziś na dworze?"],
+["s08","s","Co obejrzałem dziś z bliska: roślinę, owada, fakturę czegoś?"],
+["s09","s","Jaki dzień mieli dziś ludzie wokół mnie?"],
+["s10","s","Czego dowiedziałem się dziś o kimś bliskim?"],
+["s11","s","Co bym tu dziś zauważył, gdybym był w tym miejscu pierwszy raz?"],
+["s12","s","Jakiej muzyki dziś słuchałem? Kto ją wybrał: ja czy algorytm?"],
+["s13","s","Co zrobiłem dziś wolniej niż zwykle?"],
+["s14","s","Z kim się dziś zgodziłem, choć zwykle się nie zgadzamy?"],
+["s15","s","Jaką pogodę dziś czułem na skórze?"],
+["n01","n","Czego chciałem się dziś dowiedzieć?"],
+["n02","n","O co zapytałbym dziś kogoś, kto zna się na rzeczy?"],
+["n03","n","Co sprawdziłem dziś sam, zamiast przyjąć na słowo?"],
+["n04","n","Czego nie rozumiem, a chciałbym?"],
+["n05","n","Co zrobiłbym dziś, gdybym się nie bał wyjść na głupka?"],
+["n06","n","O czym chętnie posłuchałbym godzinnego wykładu?"],
+["n07","n","Czego mogę się nauczyć od kogoś, z kim się nie zgadzam?"],
+["n08","n","Co wydało mi się dziś dziwne?"],
+["n09","n","Czego jutro spróbuję pierwszy raz?"],
+["n10","n","Jakie miejsce, książkę albo osobę chcę poznać?"],
 ];
 
 // ---------- dane ----------
@@ -522,11 +571,11 @@ function rng(seedStr){
   return () => { h = Math.imul(h ^ h>>>16, 2246822507); h = Math.imul(h ^ h>>>13, 3266489909); return ((h ^= h>>>16) >>> 0) / 4294967296; };
 }
 function pick(arr, r){ return arr[Math.floor(r()*arr.length)]; }
-function settings(){ return Object.assign({count:4, feed:true, lupa:true, mine:true}, db.settings || {}); }
+function settings(){ return Object.assign({count:5, feed:true, good:true, lupa:true, mine:true}, db.settings || {}); }
 function drawDay(k){
   const r = rng("wieczor-"+k), st = settings();
   const P = allPool(), has = g => P.some(p => p[1]===g);
-  const fixed = [st.mine && has("x") && "x", st.feed && "f", st.lupa && "k"].filter(Boolean).slice(0, st.count);
+  const fixed = [st.mine && has("x") && "x", st.feed && "f", st.good && "g", st.lupa && "k"].filter(Boolean).slice(0, st.count);
   const ids = fixed.map(g => pick(P.filter(p=>p[1]===g), r)[0]);
   const groups = Object.keys(GROUPS).filter(g => !fixed.includes(g) && has(g));
   while (ids.length < st.count && groups.length) {
@@ -796,6 +845,8 @@ function renderExport(){
   $("setLupa").classList.toggle("on", st.lupa);
   $("setFeed").onclick = () => { db.settings = Object.assign(st, {feed:!st.feed}); persist(); renderExport(); };
   $("setLupa").onclick = () => { db.settings = Object.assign(st, {lupa:!st.lupa}); persist(); renderExport(); };
+  $("setGood").classList.toggle("on", st.good);
+  $("setGood").onclick = () => { db.settings = Object.assign(st, {good:!st.good}); persist(); renderExport(); };
   $("setMine").classList.toggle("on", st.mine);
   $("setMine").onclick = () => { db.settings = Object.assign(st, {mine:!st.mine}); persist(); renderExport(); };
   const mine = db.custom || [];
@@ -903,6 +954,7 @@ $("remTime").onchange = () => { const r = loadRem(); applyRem({on:r.on, time:$("
 loadDb();
 migrate();
 rebuildQ();
+$("verLine").textContent = `wersja 2.2 · ${POOL.length} pytań`;
 openTab((location.hash||"#wieczor").slice(1));
 </script>
 </body>
