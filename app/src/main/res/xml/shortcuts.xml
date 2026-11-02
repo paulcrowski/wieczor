@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="thought" android:enabled="true"
+        android:icon="@drawable/ic_shortcut_thought"
+        android:shortcutShortLabel="@string/sc_thought">
+        <intent android:action="com.filwol.wieczor.THOUGHT"
+            android:targetPackage="com.filwol.wieczor"
+            android:targetClass="com.filwol.wieczor.MainActivity" />
+    </shortcut>
+    <shortcut android:shortcutId="evening" android:enabled="true"
+        android:icon="@drawable/ic_shortcut_evening"
+        android:shortcutShortLabel="@string/sc_evening">
+        <intent android:action="com.filwol.wieczor.EVENING"
+            android:targetPackage="com.filwol.wieczor"
+            android:targetClass="com.filwol.wieczor.MainActivity" />
+    </shortcut>
+</shortcuts>

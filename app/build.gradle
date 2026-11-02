@@ -1,0 +1,42 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.filwol.wieczor'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.filwol.wieczor'
+        minSdk 26
+        targetSdk 35
+        versionCode 5
+        versionName '2.0'
+    }
+    // Klucz leży poza repozytorium (../wieczor-signing/keystore.properties).
+    // Bez niego wersja release podpisuje się kluczem debug.
+    def ksFile = rootProject.file('../wieczor-signing/keystore.properties')
+    signingConfigs {
+        release {
+            if (ksFile.exists()) {
+                def ks = new Properties()
+                ksFile.withInputStream { ks.load(it) }
+                storeFile file(ks['storeFile'])
+                storePassword ks['storePassword']
+                keyAlias ks['keyAlias']
+                keyPassword ks['keyPassword']
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksFile.exists() ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+}

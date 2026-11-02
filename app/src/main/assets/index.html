@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wieczór</title>
+<style>
+:root{
+  --bg:#F4F1EA; --card:#FBF9F4; --ink:#2F3B35; --muted:#7B847E; --line:#E4DFD3;
+  --sage:#6F8F7A; --sage-soft:#E3EBE4; --yellow:#E9C46A; --yellow-soft:#F7EDCF;
+  --night:#2E3A4A; --danger:#B5574B;
+  --serif: "Noto Serif", Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1B1F1D; --card:#232826; --ink:#E7E4DC; --muted:#959C97; --line:#333A37;
+    --sage:#8FB09A; --sage-soft:#2A342E; --yellow:#E2BE62; --yellow-soft:#3A3426;
+    --night:#C9D3E0; --danger:#D98476;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5}
+body{padding-bottom:84px}
+main{max-width:640px;margin:0 auto;padding:20px 16px 24px}
+h1{font-family:var(--serif);font-weight:500;font-size:1.6rem;margin:0;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-weight:500;font-size:1.15rem;margin:0 0 2px}
+.sub{color:var(--muted);font-size:.92rem}
+.view{display:none;animation:fade .35s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.dayhead{display:flex;align-items:center;gap:8px;margin:-20px -16px 12px;padding:10px 12px 8px;position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.dayhead .t{flex:1;text-align:center;border:0;background:transparent;color:inherit;font:inherit;padding:2px 0;border-radius:12px}
+.dayhead .t:active{background:var(--line)}
+.dayhead h1{font-size:1.35rem}
+.status{display:block;text-align:center;font-size:.82rem;color:var(--sage);margin-top:2px}
+.status.warn{color:var(--danger)}
+.today-link{border:0;background:var(--sage-soft);color:var(--sage);font:inherit;font-size:.8rem;border-radius:999px;padding:3px 10px;margin-top:4px}
+.edit-hint{color:var(--muted);font-size:.78rem;float:right}
+.iconbtn{width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:var(--muted);font-size:1.4rem;display:grid;place-items:center}
+.iconbtn:active{background:var(--line)}
+.iconbtn[disabled]{opacity:.25}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 16px 14px;margin-bottom:14px}
+.qnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--sage-soft);color:var(--sage);font-size:.8rem;font-weight:600;margin-right:6px;vertical-align:2px}
+.card.yellow .qnum{background:var(--yellow-soft);color:#9A7A1F}
+@media (prefers-color-scheme: dark){.card.yellow .qnum{color:var(--yellow)}}
+.hint{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+textarea,input[type=text],input[type=time]{width:100%;font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);padding:8px 2px;outline:none;resize:none}
+textarea:focus,input:focus{border-bottom-color:var(--sage)}
+textarea{min-height:52px;overflow:hidden}
+::placeholder{color:var(--muted);opacity:.7}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.9rem}
+.chip.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.chip.small{padding:4px 11px;font-size:.82rem;color:var(--muted)}
+.card.yellow .chip.small{background:var(--yellow-soft);border-color:transparent;color:var(--ink)}
+.qcard h2{font-size:1.08rem;line-height:1.35}
+.qgroup{color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.qcard.feed .qgroup{color:#9A7A1F}
+@media (prefers-color-scheme: dark){.qcard.feed .qgroup{color:var(--yellow)}}
+.qcard.skipped{opacity:.55}
+.qcard.skipped textarea{display:none}
+.qtools{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+.qtools button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.82rem;padding:6px 10px;border-radius:999px}
+.qtools button:active{background:var(--line)}
+
+.saved{height:20px;text-align:center;color:var(--muted);font-size:.82rem;transition:opacity .4s;opacity:0}
+.saved.show{opacity:1}
+
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:inherit;font-weight:600;background:var(--sage);color:#fff}
+.btn:active{filter:brightness(.95)}
+.btn.ghost{background:transparent;color:var(--sage);border:1px solid var(--line);font-weight:500}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid var(--line);font-weight:500}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+
+.thought{padding:12px 2px;border-bottom:1px solid var(--line)}
+.thought:last-child{border-bottom:0}
+.thought .meta{color:var(--muted);font-size:.8rem;margin-bottom:2px}
+.thought .txt{white-space:pre-wrap;word-wrap:break-word}
+.kind{display:inline-block;background:var(--sage-soft);color:var(--sage);border-radius:6px;padding:0 7px;font-size:.76rem;margin-left:4px}
+.empty{color:var(--muted);text-align:center;padding:22px 8px;font-size:.95rem}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+.stat b{display:block;font-family:var(--serif);font-size:1.5rem;font-weight:500}
+.stat span{color:var(--muted);font-size:.78rem}
+.bar{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:.92rem}
+.bar .name{flex:0 0 40%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .track{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar .fill{height:100%;background:var(--yellow);border-radius:4px}
+.bar .n{color:var(--muted);width:22px;text-align:right}
+.day{padding:12px 2px;border-bottom:1px solid var(--line)}
+.day:last-child{border-bottom:0}
+.day .d{font-weight:600;font-size:.95rem}
+.day .l{color:var(--muted);font-size:.88rem;white-space:pre-wrap;word-wrap:break-word;margin-top:2px}
+.day .l b{color:var(--ink);font-weight:500}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:1px}
+
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;border:0;background:transparent;color:var(--muted);font:inherit;font-size:.74rem;padding:6px 0;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--sage)}
+nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10px;box-sizing:content-box}
+
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:10}
+.sheet-bg.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-radius:22px 22px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));z-index:11;transform:translateY(105%);transition:transform .25s ease;max-width:640px;margin:0 auto}
+.sheet.on{transform:none}
+.label{font-size:.82rem;color:var(--muted);margin:14px 0 2px;text-transform:uppercase;letter-spacing:.05em}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.switch{width:50px;height:30px;border-radius:15px;background:var(--line);border:0;position:relative;flex:0 0 auto}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+.switch.on{background:var(--sage)}
+.switch.on::after{left:23px}
+.quote{font-family:var(--serif);color:var(--muted);text-align:center;font-style:italic;margin:6px 0 18px;font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+
+<!-- WIECZÓR -->
+<section class="view" id="v-wieczor">
+  <div class="dayhead">
+    <button class="iconbtn" id="prevDay" aria-label="Poprzedni dzień">‹</button>
+    <button class="t" id="dayPick" aria-label="Wybierz dzień"><h1 id="dayTitle">Dziś</h1><div class="sub" id="daySub"></div><span class="status" id="status"></span></button>
+    <button class="iconbtn" id="nextDay" aria-label="Następny dzień">›</button>
+    <input type="date" id="dateInput" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px">
+  </div>
+  <div style="text-align:center"><button class="today-link" id="goToday" style="display:none">↩ Wróć do dziś</button></div>
+  <p class="quote">Kilka słów wystarczy. Nie wiesz, to pomiń.</p>
+  <p class="sub" style="text-align:center;margin:-12px 0 14px;font-size:.75rem">wersja 2.0 · 100 pytań</p>
+
+  <div id="qs"></div>
+  <button class="btn ghost" id="addQ" style="margin-bottom:12px">+ dolosuj pytanie</button>
+
+  <button class="btn" id="doneBtn" style="margin-bottom:14px">Gotowe ✓</button>
+
+  <div class="card">
+    <h2>Myśli z tego dnia <span class="edit-hint">dotknij, by poprawić</span></h2>
+    <div id="dayThoughts"></div>
+    <button class="btn ghost" style="margin-top:10px" onclick="openTab('mysl')">+ Złap myśl</button>
+  </div>
+</section>
+
+<!-- MYŚL -->
+<section class="view" id="v-mysl">
+  <h1 style="margin:8px 0 4px">Jedna myśl</h1>
+  <p class="sub" style="margin:0 0 16px">Coś przyszło do głowy, pomyślałem, przeczytałem, chcę dodać.</p>
+  <div class="card">
+    <textarea id="tText" rows="3" placeholder="Co przyszło do głowy?"></textarea>
+    <div class="chips" id="tKinds"></div>
+    <input type="text" id="tSource" placeholder="Źródło (opcjonalnie): książka, link, osoba" style="margin-top:10px" autocomplete="off">
+    <button class="btn" style="margin-top:14px" id="tSave">Złap</button>
+  </div>
+  <div class="card">
+    <h2>Ostatnie <span class="edit-hint">dotknij, by poprawić</span></h2>
+    <div id="recentThoughts"></div>
+  </div>
+</section>
+
+<!-- HISTORIA -->
+<section class="view" id="v-historia">
+  <h1 style="margin:8px 0 16px">Historia</h1>
+  <div class="stats">
+    <div class="stat"><b id="sDays">0</b><span>wieczorów</span></div>
+    <div class="stat"><b id="sAns">0</b><span>odpowiedzi</span></div>
+    <div class="stat"><b id="sThoughts">0</b><span>myśli</span></div>
+  </div>
+  <div class="card yellow">
+    <h2>Tematy z feedu · 30 dni</h2>
+    <div id="yellowBars"></div>
+  </div>
+  <div class="card">
+    <h2>Dni <span class="edit-hint">dotknij, by poprawić</span></h2>
+    <div id="dayList"></div>
+  </div>
+</section>
+
+<!-- EKSPORT -->
+<section class="view" id="v-eksport">
+  <h1 style="margin:8px 0 16px">Eksport</h1>
+  <div class="card">
+    <div class="label" style="margin-top:0">Zakres</div>
+    <div class="chips" id="exRange"></div>
+    <div class="label">Format</div>
+    <div class="chips" id="exFormat"></div>
+    <p class="hint" id="exHint" style="margin-top:10px"></p>
+    <div class="row" style="margin-top:6px">
+      <button class="btn" id="exShare">Udostępnij</button>
+      <button class="btn ghost" id="exSave">Zapisz plik</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Pytania</h2>
+    <div class="label">Ile pytań co wieczór</div>
+    <div class="chips" id="setCount"></div>
+    <div class="toggle" style="margin-top:14px">
+      <div><b style="font-weight:500">Zawsze jedno o feedzie</b><p class="hint" style="margin:0">Telefon, aplikacje, powiadomienia</p></div>
+      <button class="switch" id="setFeed" aria-label="Pytanie o feed"></button>
+    </div>
+    <div class="toggle" style="margin-top:12px">
+      <div><b style="font-weight:500">Zawsze jedno „pod lupą”</b><p class="hint" style="margin:0">W co uwierzyłem, co uznałem za oczywiste</p></div>
+      <button class="switch" id="setLupa" aria-label="Pytanie pod lupą"></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="toggle">
+      <div><h2>Przypomnienie wieczorem</h2><p class="hint" style="margin:0">Codzienne powiadomienie</p></div>
+      <button class="switch" id="remSwitch" aria-label="Przypomnienie"></button>
+    </div>
+    <input type="time" id="remTime" value="21:30" style="margin-top:10px">
+  </div>
+
+  <div class="card">
+    <h2>Kopia zapasowa</h2>
+    <p class="hint">Dane są tylko na tym telefonie. Rób co jakiś czas eksport JSON. Import dokleja wpisy z pliku JSON do obecnych.</p>
+    <button class="btn ghost" onclick="document.getElementById('importFile').click()">Importuj JSON</button>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+  </div>
+</section>
+</main>
+
+<nav>
+  <button data-tab="wieczor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>Wieczór</button>
+  <button data-tab="mysl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>Myśl</button>
+  <button data-tab="historia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Historia</button>
+  <button data-tab="eksport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>Eksport</button>
+</nav>
+
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet">
+  <h2>Edytuj myśl</h2>
+  <textarea id="eText" rows="3" style="margin-top:8px"></textarea>
+  <div class="chips" id="eKinds"></div>
+  <input type="text" id="eSource" placeholder="Źródło (opcjonalnie)" style="margin-top:10px" autocomplete="off">
+  <div class="row" style="margin-top:16px">
+    <button class="btn danger" id="eDel">Usuń</button>
+    <button class="btn" id="eSave">Zapisz</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+const KINDS = ["przyszło do głowy","pomysł","przeczytałem","chcę dodać"];
+const $ = id => document.getElementById(id);
+const native = window.Android;
+
+// Pula pytań: [id, grupa, pytanie]. Id się nie zmieniają, bo odpowiedzi są do nich przypięte.
+const GROUPS = {f:"feed", k:"pod lupą", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
+const POOL = [
+["f01","f","Jaki temat widziałem dziś najczęściej?"],
+["f02","f","Co z telefonu pamiętam z dzisiaj?"],
+["f03","f","Ile czasu spędziłem dziś w feedzie? Strzelam."],
+["f04","f","W której aplikacji siedziałem dziś najdłużej?"],
+["f05","f","Co zrobiłem albo odpuściłem dziś przez zasięgi, feed lub powiadomienia?"],
+["f06","f","Które powiadomienie dziś mnie oderwało?"],
+["f07","f","Co mnie dziś wkurzyło w internecie?"],
+["f08","f","Co mnie dziś rozśmieszyło w internecie?"],
+["f09","f","O której pierwszy raz wziąłem dziś telefon?"],
+["f10","f","Czy coś z feedu zepsuło albo poprawiło mi dziś humor? Co?"],
+["f12","f","Czy feed dał mi dziś coś przydatnego? Co?"],
+["f14","f","Kiedy dziś odpaliłem feed odruchowo? Gdzie byłem?"],
+["f15","f","Czy coś dziś wrzuciłem? Czemu akurat to?"],
+["f16","f","Czy sprawdzałem dziś lajki, wyświetlenia albo zasięgi? Ile razy?"],
+["f18","f","Czy coś w feedzie straszyło mnie dziś? Czym?"],
+["f19","f","Co dziś przewijałem dłużej, niż chciałem?"],
+["f20","f","Kiedy dziś sam odłożyłem telefon?"],
+["f21","f","Jaki temat z feedu wraca do mnie od kilku dni?"],
+["f23","f","Co dziś robiłem bez telefonu w ręce?"],
+["f24","f","Co dziś kliknąłem, choć nie miałem zamiaru?"],
+["k01","k","W co dziś uwierzyłem bez sprawdzania?"],
+["k02","k","Co dziś komuś powtórzyłem, nie wiedząc, skąd to wiem?"],
+["k03","k","Co dziś uznałem za oczywiste?"],
+["k04","k","Z jaką opinią zgodziłem się dziś głównie dlatego, że była wszędzie?"],
+["k05","k","Kto zarabia na tym, co dziś najczęściej oglądałem?"],
+["k06","k","Jak opisałby mój dzień ktoś, kto mnie nie lubi?"],
+["k07","k","Co dziś oceniłem po samym nagłówku albo miniaturce?"],
+["k08","k","Co dziś zrobiłem, bo „tak się robi”?"],
+["k09","k","Jaki temat zniknął mi z feedu w ostatnich tygodniach?"],
+["k10","k","Na co się dziś zgodziłem, choć wolałbym odmówić?"],
+["k11","k","Co mnie dziś przekonało: fakt, liczba czy emocja?"],
+["k12","k","Z kim pokłóciłbym się dziś w komentarzach? O co?"],
+["k13","k","Co chciałem dziś kupić? Skąd ten pomysł?"],
+["k14","k","Którą swoją opinię sprawdziłbym, gdybym miał na to godzinę?"],
+["k15","k","Co dziś zrobiłem inaczej niż zwykle?"],
+["d01","d","Co chciałem dziś zrobić, a nie zrobiłem?"],
+["d02","d","Co zrobiłem dziś, choć mi się nie chciało?"],
+["d03","d","Która chwila dzisiaj była najlepsza?"],
+["d04","d","Co było dziś najtrudniejsze?"],
+["d05","d","Co dziś skończyłem?"],
+["d07","d","Co przełożyłem na jutro?"],
+["d09","d","Gdzie byłem dziś poza domem?"],
+["d10","d","Co zrobiłem dziś pierwszy raz?"],
+["d11","d","Co poszło dziś lepiej, niż myślałem?"],
+["d12","d","Co poszło dziś gorzej, niż myślałem?"],
+["d14","d","Z czego jestem dziś zadowolony?"],
+["d15","d","Co zajęło dziś więcej czasu, niż planowałem?"],
+["d17","d","Co zrobiłem dziś tylko dla siebie?"],
+["d18","d","Co mnie dziś zaskoczyło?"],
+["d20","d","Co jutro robię najpierw?"],
+["u01","u","Kiedy dziś najlepiej mi się pracowało?"],
+["u02","u","Co mnie dziś najczęściej wybijało z roboty?"],
+["u04","u","Czy dziś się nudziłem? Co wtedy zrobiłem?"],
+["u05","u","Nad czym siedziałem dziś bez przerwy dłużej niż pół godziny?"],
+["u06","u","Co dziś robiłem na autopilocie?"],
+["u07","u","O czym dziś najwięcej myślałem?"],
+["u08","u","Czy była dziś cisza? Gdzie?"],
+["u09","u","Co dziś zrobiłem powoli i porządnie?"],
+["u10","u","Co dziś przeczytałem do końca?"],
+["u11","u","Czy dziś trzymałem się planu? Gdzie się rozjechało?"],
+["u12","u","Kiedy dziś czas leciał najszybciej?"],
+["u14","u","Co dziś odkładałem, przewijając?"],
+["u15","u","Gdzie uciekałem, kiedy robiło się trudno?"],
+["c01","c","Jak spałem? Od 1 do 5."],
+["c02","c","Ile się dziś ruszałem?"],
+["c03","c","Kiedy dziś miałem najwięcej siły?"],
+["c04","c","Kiedy dziś siadła mi energia?"],
+["c05","c","Jak się czuje ciało? Jedno zdanie."],
+["c06","c","Czy byłem dziś na dworze? Jak długo?"],
+["c07","c","Kiedy dziś odpocząłem?"],
+["c09","c","Co mnie dziś bolało?"],
+["c10","c","Co dziś zrobiłem dla zdrowia?"],
+["l01","l","Z kim dziś rozmawiałem najdłużej?"],
+["l02","l","Kto mnie dziś zaskoczył?"],
+["l03","l","Komu dziś pomogłem?"],
+["l04","l","Kto mi dziś pomógł?"],
+["l05","l","Do kogo chciałem się dziś odezwać i się nie odezwałem?"],
+["l06","l","Z kim rozmawiałem dziś na żywo?"],
+["l07","l","Z kim się dziś nie zgodziłem? O co?"],
+["l08","l","Kogo dziś słuchałem: podcast, film, rozmowa?"],
+["l09","l","Po rozmowie z kim miałem lepszy humor?"],
+["l10","l","Z kim się dziś porównywałem?"],
+["m01","m","Jaka myśl wracała do mnie dziś kilka razy?"],
+["m02","m","Czego się dziś dowiedziałem?"],
+["m03","m","Jakie pytanie chodzi mi dziś po głowie?"],
+["m04","m","Co dziś choć trochę zmieniło moje zdanie?"],
+["m05","m","Z czym się dziś nie zgadzam?"],
+["m06","m","Jaki pomysł wpadł mi dziś do głowy?"],
+["m07","m","Co ciekawego dziś przeczytałem albo usłyszałem?"],
+["m08","m","Nad czym chcę jutro dłużej pomyśleć?"],
+["m09","m","Co dziś zrozumiałem lepiej niż wczoraj?"],
+["m10","m","Jakie zdanie z dzisiaj chcę zapisać?"],
+["r01","r","Kiedy dziś było spokojnie?"],
+["r02","r","Co dziś było przyjemne?"],
+["r03","r","Co ładnego dziś widziałem?"],
+["r04","r","Co dobrego dziś dostałem od kogoś?"],
+["r05","r","Co mnie dziś rozśmieszyło bez ekranu?"],
+["r07","r","Co dziś zrobiłem rękami?"],
+["r08","r","Co dziś sprawdziłem z ciekawości?"],
+["r09","r","Jaka drobna rzecz dziś wyszła?"],
+];
+
+// ---------- dane ----------
+let db = {version:1, evenings:{}, thoughts:[]};
+function loadDb(){
+  let raw = "";
+  try { raw = native ? native.load() : (localStorage.getItem("wieczor") || ""); } catch(e){}
+  if (raw) { try { const d = JSON.parse(raw); db = Object.assign({version:1,evenings:{},thoughts:[]}, d); } catch(e){} }
+}
+let saveTimer = null;
+function persist(){
+  const json = JSON.stringify(db);
+  let ok = true;
+  try { if (native) ok = native.save(json) !== false; else localStorage.setItem("wieczor", json); } catch(e){ ok = false; }
+  if (!ok) setStatus("⚠ Nie udało się zapisać", true);
+  return ok;
+}
+function save(showMark){
+  clearTimeout(saveTimer);
+  if (showMark) setStatus("zapisuję…");
+  saveTimer = setTimeout(() => { saveTimer = null; if (persist() && showMark) showDayStatus(); }, 300);
+}
+function setStatus(t, warn){ const s = $("status"); if (!s) return; s.textContent = t; s.classList.toggle("warn", !!warn); }
+function flushSave(){ if (saveTimer){ clearTimeout(saveTimer); saveTimer=null; persist(); } }
+document.addEventListener("visibilitychange", () => { if (document.hidden) flushSave(); });
+window.addEventListener("pagehide", flushSave);
+
+// ---------- daty ----------
+// Wieczór trwa do 4:00: wpis po północy liczy się do poprzedniego dnia.
+function keyOf(d){ const p=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
+function eveningKey(ts){ const d = new Date(ts - 4*3600e3); return keyOf(d); }
+function todayKey(){ return eveningKey(Date.now()); }
+function parseKey(k){ const [y,m,d]=k.split("-").map(Number); return new Date(y,m-1,d,12); }
+function shiftKey(k,n){ const d=parseKey(k); d.setDate(d.getDate()+n); return keyOf(d); }
+const fmtLong = new Intl.DateTimeFormat("pl-PL",{weekday:"long", day:"numeric", month:"long"});
+const fmtShort = new Intl.DateTimeFormat("pl-PL",{weekday:"short", day:"numeric", month:"short"});
+const fmtTime = new Intl.DateTimeFormat("pl-PL",{hour:"2-digit", minute:"2-digit"});
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+
+// ---------- nawigacja ----------
+let tab = "wieczor";
+function openTab(t){
+  if (!$("v-"+t)) t = "wieczor";
+  tab = t;
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === "v-"+t));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+  window.scrollTo(0,0);
+  if (t === "wieczor") { if (curDay !== todayKey() && !keepDay) curDay = todayKey(); keepDay=false; renderEvening(); }
+  if (t === "mysl") { renderRecent(); setTimeout(()=>$("tText").focus(), 150); }
+  if (t === "historia") renderHistory();
+  if (t === "eksport") renderExport();
+}
+window.openTab = openTab;
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => openTab(b.dataset.tab));
+window.handleBack = function(){
+  if ($("sheet").classList.contains("on")) { closeSheet(); return true; }
+  if (tab !== "wieczor") { openTab("wieczor"); return true; }
+  return false;
+};
+
+// ---------- wieczór ----------
+let curDay = todayKey(), keepDay = false;
+// Stare wpisy (3 stałe pytania) zamieniamy na listę pytań z odpowiedziami.
+const LEGACY = {L1:"Czego dziś chciałem, a nie zrobiłem?", L2:"Co dziś najczęściej mi pokazywano? (żółty)", L3:"Czy zrobiłem coś, czego feed by mi nie podsunął?"};
+const Q = Object.fromEntries(POOL.map(([id,g,q]) => [id,{g,q}]));
+function migrate(){
+  Object.entries(db.evenings).forEach(([k,e]) => {
+    if (e.items) return;
+    const items = [];
+    if (e.wanted) items.push({id:"L1", q:LEGACY.L1, a:e.wanted});
+    if (e.yellow) items.push({id:"L2", q:LEGACY.L2, a:e.yellow});
+    if (e.offpath || e.offpathWhat) items.push({id:"L3", q:LEGACY.L3, a:[e.offpath && cap(e.offpath), e.offpathWhat].filter(Boolean).join(" - ")});
+    db.evenings[k] = {items, updated:e.updated || Date.now()};
+  });
+}
+
+// Losowanie powtarzalne dla danego dnia: 1 pytanie o feed + 3 z innych grup.
+function rng(seedStr){
+  let h = 1779033703 ^ seedStr.length;
+  for (let i=0;i<seedStr.length;i++){ h = Math.imul(h ^ seedStr.charCodeAt(i), 3432918353); h = h<<13 | h>>>19; }
+  return () => { h = Math.imul(h ^ h>>>16, 2246822507); h = Math.imul(h ^ h>>>13, 3266489909); return ((h ^= h>>>16) >>> 0) / 4294967296; };
+}
+function pick(arr, r){ return arr[Math.floor(r()*arr.length)]; }
+function settings(){ return Object.assign({count:4, feed:true, lupa:true}, db.settings || {}); }
+function drawDay(k){
+  const r = rng("wieczor-"+k), st = settings();
+  const fixed = [st.feed && "f", st.lupa && "k"].filter(Boolean).slice(0, st.count);
+  const ids = fixed.map(g => pick(POOL.filter(p=>p[1]===g), r)[0]);
+  const groups = Object.keys(GROUPS).filter(g=>!fixed.includes(g));
+  while (ids.length < st.count && groups.length) {
+    const g = groups.splice(Math.floor(r()*groups.length),1)[0];
+    ids.push(pick(POOL.filter(p=>p[1]===g), r)[0]);
+  }
+  return ids.map(id => ({id, q:Q[id].q, a:""}));
+}
+function items(k){ const e = db.evenings[k]; return (e && e.items) ? e.items : drawDay(k); }
+function hasContent(it){ return it.some(x => (x.a && x.a.trim()) || x.skip); }
+function setItems(k, its, keep){
+  if (keep || hasContent(its) || (db.evenings[k] && db.evenings[k].items)) db.evenings[k] = {items:its, updated:Date.now()};
+  else delete db.evenings[k];
+  save(true);
+}
+function grow(t){ t.style.height="auto"; t.style.height = (t.scrollHeight+2)+"px"; }
+document.addEventListener("input", e => { if (e.target.tagName === "TEXTAREA") grow(e.target); });
+
+function renderEvening(){
+  const t = todayKey(), yest = shiftKey(t,-1);
+  $("dayTitle").textContent = curDay===t ? "Dziś" : curDay===yest ? "Wczoraj" : cap(fmtShort.format(parseKey(curDay)));
+  $("daySub").textContent = cap(fmtLong.format(parseKey(curDay)));
+  $("nextDay").disabled = curDay >= t;
+  $("goToday").style.display = curDay === t ? "none" : "inline-block";
+  showDayStatus();
+  renderQuestions();
+  const list = db.thoughts.filter(x => eveningKey(x.ts) === curDay).sort((a,b)=>a.ts-b.ts);
+  $("dayThoughts").innerHTML = list.length ? list.map(thoughtHtml).join("") : '<div class="empty">Jeszcze nic.</div>';
+}
+function renderQuestions(){
+  const its = items(curDay);
+  $("qs").innerHTML = its.map((x,i) => {
+    const g = Q[x.id] ? GROUPS[Q[x.id].g] : "wcześniejsze pytanie";
+    return `<div class="card qcard${Q[x.id] && (Q[x.id].g==="f" || Q[x.id].g==="k") ? " feed" : ""}${x.skip?" skipped":""}" data-i="${i}">
+      <div class="qgroup">${i+1} · ${g}${x.skip?" · pominięte":""}</div>
+      <h2>${esc(x.q)}</h2>
+      <textarea rows="1" placeholder="Kilka słów…">${esc(x.a||"")}</textarea>
+      <div class="qtools">${!Q[x.id] ? "" : '<button data-act="swap">↻ inne pytanie</button>'}<button data-act="skip">${x.skip?"odpowiem":"pomiń"}</button></div>
+    </div>`;
+  }).join("");
+  $("qs").querySelectorAll("textarea").forEach(grow);
+}
+$("qs").addEventListener("input", e => {
+  const card = e.target.closest(".qcard"); if (!card) return;
+  const its = items(curDay); const x = its[+card.dataset.i];
+  x.a = e.target.value; if (x.a) delete x.skip;
+  setItems(curDay, its);
+});
+$("qs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const i = +b.closest(".qcard").dataset.i;
+  const its = items(curDay); const x = its[i];
+  if (b.dataset.act === "skip") {
+    x.skip = !x.skip;
+  } else {
+    if (x.a && x.a.trim() && !confirm("Zmienić pytanie? Odpowiedź zniknie.")) return;
+    const used = new Set(its.map(y=>y.id));
+    const g = Q[x.id] ? Q[x.id].g : null;
+    let pool = POOL.filter(p => p[1]===g && !used.has(p[0]));
+    if (!pool.length) pool = POOL.filter(p => !used.has(p[0]));
+    const n = pick(pool, Math.random);
+    its[i] = {id:n[0], q:n[2], a:""};
+  }
+  setItems(curDay, its, true);
+  renderQuestions();
+});
+$("addQ").onclick = () => {
+  const its = items(curDay), used = new Set(its.map(y=>y.id));
+  const n = pick(POOL.filter(p => !used.has(p[0])), Math.random);
+  its.push({id:n[0], q:n[2], a:""});
+  setItems(curDay, its, true);
+  renderQuestions();
+  const cards = document.querySelectorAll(".qcard"); cards[cards.length-1].scrollIntoView({behavior:"smooth", block:"center"});
+};
+
+function goDay(k){ flushSave(); curDay = k; renderEvening(); window.scrollTo(0,0); }
+$("prevDay").onclick = () => goDay(shiftKey(curDay,-1));
+$("nextDay").onclick = () => { if (curDay < todayKey()) goDay(shiftKey(curDay,1)); };
+$("goToday").onclick = () => goDay(todayKey());
+$("dayPick").onclick = () => {
+  const d = $("dateInput"); d.max = todayKey(); d.value = curDay;
+  try { d.showPicker(); } catch(e) { d.focus(); d.click(); }
+};
+$("dateInput").onchange = e => { const v = e.target.value; if (v && v <= todayKey()) goDay(v); };
+function showDayStatus(){
+  const e = db.evenings[curDay];
+  if (e && e.updated) setStatus("✓ zapisane · " + fmtTime.format(new Date(e.updated)));
+  else setStatus("pusto · wpisz, zapisze się samo");
+}
+$("doneBtn").onclick = () => {
+  flushSave(); persist(); showDayStatus();
+  document.activeElement && document.activeElement.blur();
+  const msg = db.evenings[curDay] ? "Wieczór zapisany ✓" : "Nic jeszcze nie wpisano";
+  native ? native.toast(msg) : alert(msg);
+};
+
+// ---------- myśli ----------
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function thoughtHtml(x){
+  const when = eveningKey(x.ts) === todayKey() ? fmtTime.format(new Date(x.ts)) : fmtShort.format(new Date(x.ts)) + " · " + fmtTime.format(new Date(x.ts));
+  return `<div class="thought" data-id="${x.id}"><div class="meta">${when}<span class="kind">${esc(x.kind)}</span>${x.source?" · "+esc(x.source):""}</div><div class="txt">${esc(x.text)}</div></div>`;
+}
+function kindChips(el, current, onPick){
+  el.innerHTML = KINDS.map(k => `<button class="chip${k===current?" on":""}" data-k="${k}">${k}</button>`).join("");
+  el.querySelectorAll("[data-k]").forEach(b => b.onclick = () => { el.querySelectorAll("[data-k]").forEach(x=>x.classList.toggle("on", x===b)); onPick(b.dataset.k); });
+}
+let newKind = KINDS[0];
+kindChips($("tKinds"), newKind, k => newKind = k);
+$("tSave").onclick = () => {
+  const text = $("tText").value.trim();
+  if (!text) { $("tText").focus(); return; }
+  db.thoughts.push({id: Date.now().toString(36)+Math.random().toString(36).slice(2,6), ts: Date.now(), text, kind: newKind, source: $("tSource").value.trim()});
+  persist();
+  $("tText").value = ""; $("tSource").value = ""; grow($("tText"));
+  newKind = KINDS[0]; kindChips($("tKinds"), newKind, k => newKind = k);
+  if (native) native.toast("Złapane");
+  renderRecent();
+};
+function renderRecent(){
+  const list = db.thoughts.slice().sort((a,b)=>b.ts-a.ts).slice(0,30);
+  $("recentThoughts").innerHTML = list.length ? list.map(thoughtHtml).join("") : '<div class="empty">Tu pojawią się złapane myśli.</div>';
+}
+document.addEventListener("click", e => { const t = e.target.closest(".thought"); if (t) openSheet(t.dataset.id); });
+
+let editId = null, editKind = null;
+function openSheet(id){
+  const x = db.thoughts.find(t => t.id === id); if (!x) return;
+  editId = id; editKind = x.kind;
+  $("eText").value = x.text; $("eSource").value = x.source || "";
+  kindChips($("eKinds"), editKind, k => editKind = k);
+  $("sheetBg").classList.add("on"); $("sheet").classList.add("on");
+  setTimeout(()=>grow($("eText")),30);
+}
+function closeSheet(){ $("sheetBg").classList.remove("on"); $("sheet").classList.remove("on"); editId=null; }
+function rerender(){ openTab(tab === "wieczor" ? (keepDay=true,"wieczor") : tab); }
+$("sheetBg").onclick = closeSheet;
+$("eSave").onclick = () => {
+  const x = db.thoughts.find(t => t.id === editId);
+  if (x) { x.text = $("eText").value.trim() || x.text; x.kind = editKind; x.source = $("eSource").value.trim(); persist(); }
+  closeSheet(); rerender();
+};
+$("eDel").onclick = () => {
+  if (!confirm("Usunąć tę myśl?")) return;
+  db.thoughts = db.thoughts.filter(t => t.id !== editId); persist(); closeSheet(); rerender();
+};
+
+// ---------- historia ----------
+function renderHistory(){
+  const keys = Object.keys(db.evenings).sort().reverse();
+  $("sDays").textContent = keys.length;
+  $("sThoughts").textContent = db.thoughts.length;
+  let nAns = 0;
+  keys.forEach(k => db.evenings[k].items.forEach(x => { if (x.a && x.a.trim()) nAns++; }));
+  $("sAns").textContent = nAns;
+  const from = shiftKey(todayKey(), -29);
+  const counts = {};
+  keys.filter(k => k >= from).forEach(k => db.evenings[k].items.forEach(x => {
+    if ((x.id === "f01" || x.id === "L2") && x.a && x.a.trim()) { const y = x.a.trim().toLowerCase(); counts[y] = (counts[y]||0)+1; }
+  }));
+  const top = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  const max = top.length ? top[0][1] : 1;
+  $("yellowBars").innerHTML = top.length ? top.map(([n,c]) => `<div class="bar"><div class="name">${esc(n)}</div><div class="track"><div class="fill" style="width:${100*c/max}%"></div></div><div class="n">${c}</div></div>`).join("") : '<div class="empty">Pojawią się, kiedy wylosuje się pytanie o najczęstszy temat.</div>';
+  $("dayList").innerHTML = keys.length ? keys.map(k => {
+    const its = db.evenings[k].items;
+    const nT = db.thoughts.filter(t => eveningKey(t.ts) === k).length;
+    const rows = its.map(x => x.a && x.a.trim() ? `<div class="l"><b>${esc(x.q)}</b> ${esc(x.a)}</div>` : x.skip ? `<div class="l"><b>${esc(x.q)}</b> pominięte</div>` : "").join("");
+    return `<div class="day" data-day="${k}"><div class="d">${cap(fmtLong.format(parseKey(k)))}</div>${rows}`
+      + (nT ? `<div class="l"><b>Myśli:</b> ${nT}</div>` : "") + `</div>`;
+  }).join("") : '<div class="empty">Na razie pusto.</div>';
+  $("dayList").querySelectorAll("[data-day]").forEach(d => d.onclick = () => { curDay = d.dataset.day; keepDay = true; openTab("wieczor"); });
+}
+
+// ---------- eksport ----------
+const RANGES = [["7 dni",7],["30 dni",30],["Wszystko",0]];
+const FORMATS = [
+  ["Markdown","md","Do czytania i do notatek: dzień po dniu, z myślami."],
+  ["CSV odpowiedzi","csv-e","Tabela do analizy: jeden wiersz to jedna odpowiedź (data, grupa, pytanie, odpowiedź)."],
+  ["CSV myśli","csv-t","Tabela myśli: data, godzina, rodzaj, treść, źródło."],
+  ["JSON kopia","json","Pełna kopia danych. Da się ją potem zaimportować."]
+];
+let exRange = 0, exFormat = "md";
+function renderExport(){
+  $("exRange").innerHTML = RANGES.map(([l,n]) => `<button class="chip${n===exRange?" on":""}" data-r="${n}">${l}</button>`).join("");
+  $("exFormat").innerHTML = FORMATS.map(([l,f]) => `<button class="chip${f===exFormat?" on":""}" data-f="${f}">${l}</button>`).join("");
+  $("exRange").querySelectorAll("[data-r]").forEach(b => b.onclick = () => { exRange = +b.dataset.r; renderExport(); });
+  $("exFormat").querySelectorAll("[data-f]").forEach(b => b.onclick = () => { exFormat = b.dataset.f; renderExport(); });
+  const r = collect();
+  $("exHint").textContent = FORMATS.find(f=>f[1]===exFormat)[2] + ` (${r.days.length} wieczorów, ${r.thoughts.length} myśli)`;
+  const st = settings();
+  $("setCount").innerHTML = [2,3,4,5].map(n => `<button class="chip${n===st.count?" on":""}" data-n="${n}">${n}</button>`).join("");
+  $("setCount").querySelectorAll("[data-n]").forEach(b => b.onclick = () => { db.settings = Object.assign(st, {count:+b.dataset.n}); persist(); renderExport(); });
+  $("setFeed").classList.toggle("on", st.feed);
+  $("setLupa").classList.toggle("on", st.lupa);
+  $("setFeed").onclick = () => { db.settings = Object.assign(st, {feed:!st.feed}); persist(); renderExport(); };
+  $("setLupa").onclick = () => { db.settings = Object.assign(st, {lupa:!st.lupa}); persist(); renderExport(); };
+  const rem = loadRem();
+  $("remSwitch").classList.toggle("on", rem.on);
+  $("remTime").value = rem.time;
+}
+function collect(){
+  const from = exRange ? shiftKey(todayKey(), -(exRange-1)) : "0000";
+  const days = Object.keys(db.evenings).filter(k => k >= from).sort();
+  const thoughts = db.thoughts.filter(t => eveningKey(t.ts) >= from).sort((a,b)=>a.ts-b.ts);
+  return {from, days, thoughts};
+}
+function csvCell(v){ v = v==null ? "" : String(v); return /[",\n;]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function csv(rows){ return "﻿" + rows.map(r => r.map(csvCell).join(",")).join("\n") + "\n"; }
+function build(){
+  const r = collect(), stamp = todayKey();
+  if (exFormat === "json") {
+    const data = exRange ? {version:1, evenings:Object.fromEntries(r.days.map(k=>[k,db.evenings[k]])), thoughts:r.thoughts} : db;
+    return {name:`wieczor-kopia-${stamp}.json`, mime:"application/json", body: JSON.stringify(data, null, 2)};
+  }
+  if (exFormat === "csv-e") {
+    const rows = [["data","id_pytania","grupa","pytanie","odpowiedz","pominiete"]];
+    r.days.forEach(k => db.evenings[k].items.forEach(x => rows.push([k, x.id, Q[x.id] ? GROUPS[Q[x.id].g] : "stare", x.q, x.a||"", x.skip ? "tak" : ""])));
+    return {name:`odpowiedzi-${stamp}.csv`, mime:"text/csv", body: csv(rows)};
+  }
+  if (exFormat === "csv-t") {
+    const rows = [["data","godzina","rodzaj","tresc","zrodlo"]];
+    r.thoughts.forEach(t => rows.push([eveningKey(t.ts), fmtTime.format(new Date(t.ts)), t.kind, t.text, t.source||""]));
+    return {name:`mysli-${stamp}.csv`, mime:"text/csv", body: csv(rows)};
+  }
+  // markdown
+  const allKeys = [...new Set([...r.days, ...r.thoughts.map(t=>eveningKey(t.ts))])].sort();
+  let md = `# Wieczory i myśli\n\nEksport: ${stamp} · zakres: ${exRange ? "ostatnie "+exRange+" dni" : "wszystko"} · ${r.days.length} wieczorów, ${r.thoughts.length} myśli\n`;
+  allKeys.forEach(k => {
+    const e = db.evenings[k];
+    md += `\n## ${k} · ${fmtLong.format(parseKey(k))}\n\n`;
+    if (e) {
+      e.items.forEach(x => { md += `**${x.q}**\n${x.a && x.a.trim() ? x.a.trim() : x.skip ? "(pominięte)" : "-"}\n\n`; });
+    }
+    const ts = r.thoughts.filter(t => eveningKey(t.ts) === k);
+    if (ts.length) {
+      md += `**Myśli:**\n\n`;
+      ts.forEach(t => { md += `- ${fmtTime.format(new Date(t.ts))} *${t.kind}* - ${t.text.replace(/\n+/g," ")}${t.source ? " (źródło: "+t.source+")" : ""}\n`; });
+      md += "\n";
+    }
+  });
+  return {name:`wieczory-${stamp}.md`, mime:"text/markdown", body: md};
+}
+function download(f){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([f.body],{type:f.mime})); a.download = f.name; a.click();
+}
+$("exShare").onclick = () => { flushSave(); const f = build(); native ? native.share(f.name, f.body, f.mime) : download(f); };
+$("exSave").onclick = () => { flushSave(); const f = build(); native ? native.saveAs(f.name, f.body, f.mime) : download(f); };
+
+$("importFile").onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const d = JSON.parse(rd.result);
+      let ne = 0, nt = 0;
+      Object.entries(d.evenings || {}).forEach(([k,v]) => { const cur = db.evenings[k]; if (!cur || (v.updated||0) > (cur.updated||0)) { db.evenings[k] = v; ne++; } });
+      const ids = new Set(db.thoughts.map(t=>t.id));
+      (d.thoughts || []).forEach(t => { if (t && t.id && !ids.has(t.id)) { db.thoughts.push(t); nt++; } });
+      migrate(); persist(); renderExport();
+      alert(`Zaimportowano: ${ne} wieczorów, ${nt} myśli.`);
+    } catch(err) { alert("To nie wygląda na plik kopii z tej aplikacji."); }
+    e.target.value = "";
+  };
+  rd.readAsText(file);
+};
+
+// ---------- przypomnienie ----------
+function loadRem(){ const r = db.reminder || {on:false, time:"21:30"}; return r; }
+function applyRem(r){
+  db.reminder = r; persist();
+  const [h,m] = r.time.split(":").map(Number);
+  if (native) native.setReminder(r.on, h||21, m||0);
+  renderExport();
+}
+$("remSwitch").onclick = () => { const r = loadRem(); applyRem({on:!r.on, time:$("remTime").value||"21:30"}); };
+$("remTime").onchange = () => { const r = loadRem(); applyRem({on:r.on, time:$("remTime").value||"21:30"}); };
+
+// ---------- start ----------
+loadDb();
+migrate();
+openTab((location.hash||"#wieczor").slice(1));
+</script>
+</body>
+</html>
