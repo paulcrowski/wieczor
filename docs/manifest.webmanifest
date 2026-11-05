@@ -1,0 +1,21 @@
+{
+  "name": "Wieczór",
+  "short_name": "Wieczór",
+  "description": "Wieczorne pytania: kilka słów o dniu i o tym, co pokazuje feed. Dane zostają na urządzeniu.",
+  "lang": "pl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F1EA",
+  "theme_color": "#F4F1EA",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Złap myśl", "url": "./#mysl", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Wieczór", "url": "./#wieczor", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}

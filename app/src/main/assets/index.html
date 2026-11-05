@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wieczór</title>
+<meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B1F1D" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Wieczorne pytania: kilka słów o dniu i o tym, co pokazuje feed. Dane zostają w przeglądarce.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wieczór">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
 :root{
   --bg:#F4F1EA; --card:#FBF9F4; --ink:#2F3B35; --muted:#7B847E; --line:#E4DFD3;
@@ -251,6 +261,13 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
 <!-- EKSPORT -->
 <section class="view" id="v-eksport">
   <h1 style="margin:8px 0 16px">Więcej</h1>
+
+  <div class="card" id="installCard" style="display:none">
+    <h2>Zainstaluj jak aplikację</h2>
+    <p class="hint" style="margin:0 0 6px"><b style="font-weight:500">iPhone (Safari):</b> Udostępnij → Dodaj do ekranu początkowego.</p>
+    <p class="hint" style="margin:0 0 6px"><b style="font-weight:500">Android (Chrome):</b> menu ⋮ → Zainstaluj aplikację.</p>
+    <p class="hint" style="margin:0">Potem otwiera się na pełnym ekranie i działa bez internetu. Dane zostają w tej przeglądarce, na tym urządzeniu.</p>
+  </div>
   <div class="card">
     <div class="label" style="margin-top:0">Zakres</div>
     <div class="chips" id="exRange"></div>
@@ -293,7 +310,12 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
     <button class="btn ghost" id="addMyQ" style="margin-top:10px">Dodaj pytanie</button>
   </div>
 
-  <div class="card">
+  <div class="card" id="remWebNote" style="display:none">
+    <h2>Przypomnienie</h2>
+    <p class="hint" style="margin:0">Wersja w przeglądarce nie wysyła powiadomień (nie ma serwera, więc nic nie opuszcza telefonu). Ustaw zwykły alarm w zegarze, np. na 21:30.</p>
+  </div>
+
+  <div class="card" id="remCard">
     <div class="toggle">
       <div><h2>Przypomnienie wieczorem</h2><p class="hint" style="margin:0">Codzienne powiadomienie</p></div>
       <button class="switch" id="remSwitch" aria-label="Przypomnienie"></button>
@@ -303,7 +325,7 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
 
   <div class="card">
     <h2>Kopia zapasowa</h2>
-    <p class="hint">Dane są tylko na tym telefonie. Rób co jakiś czas eksport JSON. Import dokleja wpisy z pliku JSON do obecnych.</p>
+    <p class="hint">Dane są tylko na tym urządzeniu (w aplikacji albo w przeglądarce). Rób co jakiś czas eksport JSON. Przeglądarka może wyczyścić dane, gdy zabraknie miejsca albo je usuniesz. Import dokleja wpisy z pliku JSON do obecnych.</p>
     <button class="btn ghost" onclick="document.getElementById('importFile').click()">Importuj JSON</button>
     <input type="file" id="importFile" accept="application/json,.json" style="display:none">
   </div>
@@ -911,9 +933,19 @@ function build(){
 }
 function download(f){
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([f.body],{type:f.mime})); a.download = f.name; a.click();
+  const url = URL.createObjectURL(new Blob([f.body],{type:f.mime}));
+  a.href = url; a.download = f.name; a.style.display = "none";
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
 }
-$("exShare").onclick = () => { flushSave(); const f = build(); native ? native.share(f.name, f.body, f.mime) : download(f); };
+async function shareWeb(f){
+  try {
+    const file = new File([f.body], f.name, {type:f.mime});
+    if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:f.name}); return; }
+  } catch(e) { if (e && e.name === "AbortError") return; }
+  download(f);
+}
+$("exShare").onclick = () => { flushSave(); const f = build(); native ? native.share(f.name, f.body, f.mime) : shareWeb(f); };
 $("exSave").onclick = () => { flushSave(); const f = build(); native ? native.saveAs(f.name, f.body, f.mime) : download(f); };
 
 $("importFile").onchange = e => {
@@ -954,7 +986,16 @@ $("remTime").onchange = () => { const r = loadRem(); applyRem({on:r.on, time:$("
 loadDb();
 migrate();
 rebuildQ();
-$("verLine").textContent = `wersja 2.3 · ${POOL.length} pytań`;
+$("verLine").textContent = `wersja 2.3 · ${POOL.length} pytań` + (native ? "" : " · przeglądarka");
+if (!native) {
+  $("remCard").style.display = "none"; $("remWebNote").style.display = "block";
+  const standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+  if (!standalone) $("installCard").style.display = "block";
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch(e){}
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+}
 openTab((location.hash||"#wieczor").slice(1));
 </script>
 </body>

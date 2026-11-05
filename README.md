@@ -12,6 +12,8 @@ You answer in a few words, or skip. It takes a couple of minutes.
 
 I built it for myself, to study how my feed shapes my day. Two questions are in every draw by default: one about the feed and one about what went well (you can change that).
 
+**Try it now (iPhone, Android, desktop):** [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/). No download, no account.
+
 **Language:** the app and its questions are in Polish. The English README is here so you can see what it does and read the code. Translating the question pool is on the to-do list (see below). Pull requests are welcome.
 
 ## Features
@@ -28,7 +30,7 @@ An entry made between midnight and 4:00 counts toward the previous evening.
 
 ## Privacy
 
-The app has no internet permission, so Android will not let it send anything anywhere. There is no account, no ads and no analytics. Your answers stay in the phone's storage and leave it only when you export them yourself.
+The Android app has no internet permission, so Android will not let it send anything anywhere. The web version is served as static files from GitHub Pages and is locked down with a Content-Security-Policy that only lets the page talk to itself; after the first load it runs from the browser's cache. GitHub, as the host, sees the usual server logs when the page is loaded, but nothing you write is ever sent anywhere. There is no account, no ads and no analytics. Your answers stay in the phone's storage and leave it only when you export them yourself.
 
 Side effect: if you uninstall the app, the data goes with it. Export a "JSON kopia" (JSON backup) from time to time and keep the file somewhere safe. "Importuj JSON" under "Więcej" loads it back.
 
@@ -36,11 +38,21 @@ Permissions: notifications (the reminder) and start after boot (so the reminder 
 
 ## Install
 
+### iPhone, iPad, or any browser (web app)
+
+1. Open [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/) in Safari (iPhone) or Chrome (Android, desktop).
+2. iPhone: tap Share → **Add to Home Screen**. Android: menu ⋮ → **Install app**.
+3. It now opens full screen and works offline.
+
+No certificate, no App Store, no account. What the web version does **not** have: the daily reminder notification (a browser cannot schedule one without a server, which would break the privacy promise; set a normal alarm in your clock app instead) and the home-screen shortcut on iPhone. Data stays in the browser's storage on that device. Browsers can clear it when space runs low or if you delete the site's data, so export a JSON backup from time to time. Use Share → "Save to Files" to keep the export.
+
+### Android (APK)
+
 1. Download `Wieczor-v2.3.apk` from the [latest release](../../releases/latest).
 2. Open the file on your phone. Android will ask for permission to install from this source.
 3. If Play Protect shows a warning, choose "Install anyway". It appears because the app is not on Google Play.
 
-Requires Android 8.0 or newer.
+Requires Android 8.0 or newer. The APK has the reminder notification and stores data in the app's own folder.
 
 ## What it is based on
 
@@ -68,7 +80,7 @@ Build (Android SDK and JDK 17+):
 
 Without your own key in `../wieczor-signing/keystore.properties` the APK is signed with the debug key.
 
-You can also open `index.html` in a browser. Data is then kept in `localStorage`.
+The web version lives in [`docs/`](docs). It is generated from the same `index.html`: after editing it, run `python3 tools/sync_web.py` (it adds the CSP and versions the offline cache). GitHub Pages serves `main` from `/docs`. In a browser the data is kept in `localStorage`.
 
 ## Questions
 

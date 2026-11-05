@@ -2,7 +2,9 @@
 
 🇵🇱 Polski · [🇬🇧 English](README.md)
 
-Aplikacja na Androida do wieczornych pytań. Co wieczór losuje kilka pytań ze 145, na przykład:
+Aplikacja do wieczornych pytań: na Androida (APK) i w przeglądarce (też na iPhone'a).
+
+**Wypróbuj od razu:** [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/). Bez pobierania i bez konta. Co wieczór losuje kilka pytań ze 145, na przykład:
 
 - O której pierwszy raz wziąłem dziś telefon?
 - W co dziś uwierzyłem bez sprawdzania?
@@ -26,7 +28,7 @@ Wpis zrobiony między północą a 4:00 liczy się do poprzedniego wieczoru.
 
 ## Prywatność
 
-Aplikacja nie ma uprawnienia do internetu, więc Android nie pozwoli jej niczego wysłać. Nie ma konta, reklam ani analityki. Odpowiedzi leżą w pamięci telefonu i wychodzą z niego tylko wtedy, gdy sam zrobisz eksport.
+Aplikacja na Androida nie ma uprawnienia do internetu, więc system nie pozwoli jej niczego wysłać. Wersja webowa to statyczne pliki na GitHub Pages z polityką Content-Security-Policy, która pozwala stronie łączyć się tylko ze sobą. Po pierwszym wczytaniu działa z pamięci przeglądarki. GitHub jako hosting widzi zwykłe logi serwera przy otwarciu strony, ale to, co piszesz, nigdzie nie jest wysyłane. Nie ma konta, reklam ani analityki. Odpowiedzi leżą w pamięci telefonu i wychodzą z niego tylko wtedy, gdy sam zrobisz eksport.
 
 Skutek uboczny: po odinstalowaniu aplikacji dane znikają. Co jakiś czas zrób eksport „JSON kopia” i trzymaj plik w bezpiecznym miejscu. Import w zakładce Eksport wczyta go z powrotem.
 
@@ -34,11 +36,21 @@ Uprawnienia: powiadomienia (przypomnienie) i start po włączeniu telefonu (żeb
 
 ## Instalacja
 
+### iPhone, iPad albo dowolna przeglądarka (wersja webowa)
+
+1. Otwórz [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/) w Safari (iPhone) albo w Chrome (Android, komputer).
+2. iPhone: Udostępnij → **Dodaj do ekranu początkowego**. Android: menu ⋮ → **Zainstaluj aplikację**.
+3. Aplikacja otwiera się na pełnym ekranie i działa bez internetu.
+
+Bez certyfikatu, bez App Store i bez konta. Czego **nie ma** w wersji webowej: przypomnienia (przeglądarka nie ustawi powiadomienia o stałej godzinie bez serwera, a serwer zepsułby obietnicę prywatności; ustaw zwykły alarm w zegarze) i skrótu „Złap myśl” na ikonie iPhone'a. Dane są w pamięci przeglądarki na tym urządzeniu. Przeglądarka może je wyczyścić, gdy zabraknie miejsca albo usuniesz dane strony, więc rób co jakiś czas eksport JSON i zapisuj go przez Udostępnij → „Zachowaj w Plikach”.
+
+### Android (APK)
+
 1. Pobierz `Wieczor-v2.3.apk` z [zakładki Releases](../../releases/latest).
 2. Otwórz plik na telefonie. Android zapyta o zgodę na instalację z tego źródła.
 3. Jeśli pojawi się ostrzeżenie Play Protect, wybierz „Zainstaluj mimo to”. Pojawia się, bo aplikacji nie ma w Sklepie Play.
 
-Wymaga Androida 8.0 lub nowszego.
+Wymaga Androida 8.0 lub nowszego. APK ma przypomnienie i trzyma dane w własnym folderze aplikacji.
 
 ## Na czym to stoi
 
@@ -66,7 +78,7 @@ Budowanie (Android SDK i JDK 17+):
 
 Bez własnego klucza w `../wieczor-signing/keystore.properties` APK podpisze się kluczem debug.
 
-Plik `index.html` można też otworzyć w przeglądarce. Dane zapiszą się wtedy w `localStorage`.
+Wersja webowa leży w [`docs/`](docs) i powstaje z tego samego `index.html`: po edycji uruchom `python3 tools/sync_web.py` (dopisuje CSP i wersjonuje cache offline). GitHub Pages serwuje `main` z `/docs`. W przeglądarce dane trafiają do `localStorage`.
 
 ## Pytania
 
