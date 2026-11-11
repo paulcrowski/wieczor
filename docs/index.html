@@ -230,7 +230,7 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
     <p class="hint">Słowa, które padły w tym tygodniu co najmniej dwa razy.</p>
     <div class="chips" id="weekWords"></div>
   </div>
-  <div class="card"><h2>Pod lupą</h2><div id="weekLupa"></div></div>
+  <div class="card"><h2>Zaskoczenia i echo</h2><div id="weekLupa"></div></div>
   <div class="card"><h2>Feed</h2><div id="weekFeed"></div></div>
   <div class="card"><h2>Inne odpowiedzi</h2><div id="weekOther"></div></div>
   <div class="card"><h2>Myśli</h2><div id="weekThoughts"></div></div>
@@ -286,6 +286,10 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
     <div class="label">Ile pytań co wieczór</div>
     <div class="chips" id="setCount"></div>
     <div class="toggle" style="margin-top:14px">
+      <div><b style="font-weight:500">Dziennik pragnień</b><p class="hint" style="margin:0">Co wieczór te same trzy pytania na początku: czego chciałem, a nie zrobiłem; co mi najczęściej pokazywano; co zrobiłem poza feedem. Reszta się losuje.</p></div>
+      <button class="switch" id="setWants" aria-label="Dziennik pragnień"></button>
+    </div>
+    <div class="toggle" style="margin-top:12px">
       <div><b style="font-weight:500">Zawsze jedno o feedzie</b><p class="hint" style="margin:0">Telefon, aplikacje, powiadomienia</p></div>
       <button class="switch" id="setFeed" aria-label="Pytanie o feed"></button>
     </div>
@@ -294,8 +298,12 @@ nav button.on svg{background:var(--sage-soft);border-radius:10px;padding:2px 10p
       <button class="switch" id="setGood" aria-label="Pytanie dobre"></button>
     </div>
     <div class="toggle" style="margin-top:12px">
-      <div><b style="font-weight:500">Zawsze jedno „pod lupą”</b><p class="hint" style="margin:0">W co uwierzyłem, co uznałem za oczywiste</p></div>
-      <button class="switch" id="setLupa" aria-label="Pytanie pod lupą"></button>
+      <div><b style="font-weight:500">Zawsze jedno zaskakujące</b><p class="hint" style="margin:0">Z innej strony, skala, wyobraźnia, decyzje, algorytm, sens, jutro</p></div>
+      <button class="switch" id="setSurprise" aria-label="Pytanie zaskakujące"></button>
+    </div>
+    <div class="toggle" style="margin-top:12px">
+      <div><b style="font-weight:500">Czasem echo</b><p class="hint" style="margin:0">Wraca Twoja odpowiedź albo myśl sprzed kilku dni</p></div>
+      <button class="switch" id="setEcho" aria-label="Echo"></button>
     </div>
     <div class="toggle" style="margin-top:12px">
       <div><b style="font-weight:500">Zawsze jedno moje</b><p class="hint" style="margin:0">Działa, kiedy masz własne pytania</p></div>
@@ -360,7 +368,7 @@ const $ = id => document.getElementById(id);
 const native = window.Android;
 
 // Pula pytań: [id, grupa, pytanie]. Id się nie zmieniają, bo odpowiedzi są do nich przypięte.
-const GROUPS = {x:"moje", f:"feed", g:"dobre", k:"pod lupą", s:"świat wokół", n:"ciekawość", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
+const GROUPS = {x:"moje", f:"feed", g:"dobre", k:"pod lupą", z:"z innej strony", t:"skala", w:"wyobraźnia", p:"rozdroża", a:"algorytm", o:"sens", j:"jutro", s:"świat wokół", n:"ciekawość", d:"dzień", u:"uwaga", c:"ciało", l:"ludzie", m:"głowa", r:"drobiazgi"};
 const POOL = [
 ["f01","f","Jaki temat widziałem dziś najczęściej?"],
 ["f02","f","Co z telefonu pamiętam z dzisiaj?"],
@@ -507,6 +515,100 @@ const POOL = [
 ["n08","n","Co wydało mi się dziś dziwne?"],
 ["n09","n","Czego jutro spróbuję pierwszy raz?"],
 ["n10","n","Jakie miejsce, książkę albo osobę chcę poznać?"],
+["z01","z","Co z dzisiejszego dnia ktoś bliski zapamięta inaczej niż ja?"],
+["z02","z","Jak mój dzień opisałby ktoś, kto mnie bardzo lubi?"],
+["z03","z","Co bym doradził koledze, który miał dziś dokładnie taki dzień jak ja?"],
+["z04","z","Czego z dzisiejszego dnia nie zrozumiałby ktoś z roku 1950?"],
+["z05","z","Gdzie dziś byłem tylko ciałem, a gdzie głową?"],
+["z06","z","Gdyby ktoś nagrał mój dzień, który kawałek dałoby się oglądać?"],
+["z07","z","Co dziś zrobiłem, co z boku wyglądałoby dziwnie?"],
+["z08","z","Kto dziś zrobił coś dla mnie tak cicho, że prawie nie zauważyłem?"],
+["z09","z","Co telefon mógłby o mnie powiedzieć po dzisiejszym dniu?"],
+["z10","z","Czyj punkt widzenia dziś odrzuciłem szybciej, niż zdążyłem go wysłuchać?"],
+["z11","z","Które moje dzisiejsze zdanie mogło zabrzmieć ostrzej, niż chciałem?"],
+["z12","z","Co ja sprzed dziesięciu lat powiedziałby o moim dzisiejszym dniu?"],
+["z13","z","O co ja za dziesięć lat poprosiłby mnie dzisiaj?"],
+["z14","z","Co mnie dziś irytowało, a ktoś inny uznałby to za luksus?"],
+["z15","z","Czego nie widzę w czyimś życiu tylko dlatego, że sam tego nie mam?"],
+["z16","z","Czy osoba, z którą się dziś nie zgadzałem, rozpoznałaby siebie w tym, jak ją opisuję?"],
+["t01","t","Co mnie dziś martwiło najbardziej? Czy za rok będę o tym pamiętał?"],
+["t02","t","Które dzisiejsze wiadomości mogą realnie zmienić coś w moim tygodniu?"],
+["t03","t","Który dzisiejszy news dotyczył rzeczy, na którą mam wpływ?"],
+["t04","t","Co rano wydawało się wielkie, a wieczorem już nie?"],
+["t05","t","Co z dzisiejszego dnia będzie warte opowiedzenia za dwadzieścia lat?"],
+["t06","t","Gdyby ten dzień był jednym zdaniem w mojej biografii, jak by brzmiało?"],
+["t07","t","Który kawałek dzisiejszej pracy będzie ważny za pięć lat?"],
+["t08","t","Co dziś trwało dłużej, niż potrzeba, a co krócej, niż zasługiwało?"],
+["t09","t","Ilu ludzi dziś naprawdę spotkałem, a ilu tylko widziałem na ekranie?"],
+["t10","t","Co dziś zrobiłem, co za rok będzie dawać procent?"],
+["t11","t","Gdybym przeżywał ten dzień 365 razy z rzędu, kim bym się stał?"],
+["t12","t","Jak wyglądałby świat, gdyby wszyscy spędzili dziś dzień tak jak ja?"],
+["t13","t","Ile minut z dzisiejszego dnia chciałbym odzyskać, a ile przeżyć jeszcze raz?"],
+["t14","t","Co dziś wydawało mi się pilne, a po godzinie okazało się nieważne?"],
+["w01","w","Gdyby dzisiejszy dzień był rozdziałem książki, jak by się nazywał?"],
+["w02","w","Gdyby jutro nikt niczego ode mnie nie chciał, co zrobiłbym najpierw?"],
+["w03","w","Jakim zwierzęciem byłem dziś o piętnastej?"],
+["w04","w","Jaki kolor miał dzisiejszy dzień?"],
+["w05","w","Gdyby ten dzień miał smak, jaki?"],
+["w06","w","Co powiedziałbym sobie dziś rano, gdybym znał wieczór?"],
+["w07","w","Jaki zwykły przedmiot z dzisiejszego dnia zasługuje na pomnik?"],
+["w08","w","Gdybym miał dziś jedną supermoc, w którym momencie by się przydała?"],
+["w09","w","Który moment dzisiaj nadawałby się na scenę filmową? Kto by mnie zagrał?"],
+["w10","w","Gdybym mógł wymazać z dzisiaj jedną godzinę i nikt by tego nie zauważył, którą?"],
+["w11","w","Gdybym mógł dołożyć do dzisiaj jedną godzinę, na co?"],
+["w12","w","Jakie pytanie zadałby mi ośmiolatek, który obserwował mnie cały dzień?"],
+["w13","w","Jaki dźwięk najlepiej opisuje dzisiejszy dzień?"],
+["w14","w","Gdybym opowiedział dzisiejszy dzień jako żart, jaka byłaby puenta?"],
+["p01","p","Jaką decyzję odkładam, bo boję się odpowiedzi?"],
+["p02","p","Co zrobiłbym w sprawie, która mnie dziś gryzie, gdyby nikt mnie nie oceniał?"],
+["p03","p","Jaką sprawę dziś przerabiałem w głowie po raz trzeci, bez nowych informacji?"],
+["p04","p","Jakiej jednej informacji brakuje mi do decyzji, która wisi?"],
+["p05","p","Jaki najlepszy argument przeciw mojemu planowi usłyszałem albo wymyśliłem dziś?"],
+["p06","p","Czy jest decyzja, którą już podjąłem, tylko jeszcze o tym nie powiedziałem?"],
+["p07","p","Ile mnie kosztuje czekanie z decyzją, która wisi: czas, pieniądze, spokój?"],
+["p08","p","Jaką decyzję mógłbym dziś podjąć w pięć minut, gdyby dało się ją cofnąć?"],
+["p09","p","Kogo mogę zapytać o radę i jeszcze tego nie zrobiłem?"],
+["p10","p","Co doradziłbym komuś, kogo kocham, w sprawie, która mnie dziś gryzie?"],
+["p11","p","Co w sprawie, która wisi, jest strachem, a co zwykłym „nie chce mi się”?"],
+["p12","p","Jaki jest najlepszy argument za tym, żeby w sprawie, która wisi, nic nie robić?"],
+["a01","a","Jakim człowiekiem feed uważa mnie po dzisiejszych kliknięciach?"],
+["a02","a","Czego feed nie pokazał mi dziś wcale, a mógłby?"],
+["a03","a","Gdyby mój feed był człowiekiem, jak by mnie dziś zagadał?"],
+["a04","a","Co czułem tuż przed tym, jak dziś odruchowo sięgnąłem po telefon?"],
+["a05","a","Co by się stało, gdybym o dzisiejszej wiadomości, która mnie poruszyła, nie wiedział przez tydzień?"],
+["a06","a","Którą emocję feed wzbudził dziś najczęściej: lęk, złość, śmiech, zazdrość?"],
+["a07","a","Komu opłaca się, żebym dziś czuł to, co czułem w feedzie?"],
+["a08","a","Co dziś zobaczyłem tylko dlatego, że klikało to mnóstwo ludzi?"],
+["a09","a","Ile z moich dzisiejszych opinii pochodzi z feedu, a ile z mojego życia?"],
+["a10","a","Czego chciałbym, żeby feed pokazywał mi więcej? Co mogę zrobić, żeby tak było?"],
+["a11","a","Co mogłem dziś zrobić z lękiem z wiadomości, żeby na coś się przydał?"],
+["a12","a","Co dziś zrobiłem albo opublikowałem dla zasięgów, a nie dla siebie?"],
+["a13","a","Jaka moja dzisiejsza opinia przetrwałaby tydzień bez internetu?"],
+["a14","a","Kogo feed pokazał mi dziś jako wroga?"],
+["o01","o","Co dziś zrobiłem, co miało sens dla kogoś innego niż ja?"],
+["o02","o","Co dziś robiłem tylko dlatego, że lubię to robić?"],
+["o03","o","Po czym dziś poznałem, że ktoś mnie potrzebuje?"],
+["o04","o","Co z dzisiejszego dnia chciałbym, żeby ktoś zobaczył?"],
+["o05","o","Jaka mała rzecz mogła się dziś nie udać, a udała się dzięki mnie?"],
+["o06","o","Co dziś zrobiłem dlatego, że uważam, że tak trzeba, a nie dlatego, że muszę?"],
+["o07","o","Komu należy się podziękowanie, którego jeszcze nie powiedziałem?"],
+["o08","o","Na co poszła dziś moja energia, a na co chciałbym, żeby poszła?"],
+["o09","o","Co dziś zrobiłem zgodnie z tym, kim chcę być?"],
+["o10","o","W którym momencie dziś byłem naprawdę obecny?"],
+["o11","o","Co miałoby dla mnie sens, gdyby nikt tego nie zobaczył, nie polubił i nie zapłacił?"],
+["o12","o","O co chciałbym, żeby ktoś mnie dziś zapytał?"],
+["j01","j","Jedna rzecz, którą jutro zrobię inaczej, żeby zobaczyć, co się stanie?"],
+["j02","j","Kiedy jutro sięgnę po telefon odruchowo i co zrobię zamiast tego?"],
+["j03","j","Do kogo jutro odezwę się pierwszy, bez powodu?"],
+["j04","j","Co jutro zrobię w pięć minut, a odkładam od tygodnia?"],
+["j05","j","Jakie jedno pytanie zadam jutro komuś bliskiemu zamiast „jak było”?"],
+["j06","j","Co jutro zrobię w całości bez telefonu w ręce?"],
+["j07","j","Co jutro sprawdzę sam, zamiast przyjąć z feedu?"],
+["j08","j","Którą zwykłą drogę jutro przejdę inną trasą?"],
+["j09","j","Czego jutro nie zrobię, choć zwykle robię?"],
+["j10","j","Komu jutro pomogę, zanim poprosi?"],
+["j11","j","Co jutro powiem na głos, czego zwykle nie mówię?"],
+["j12","j","Jak zacznę jutro pierwsze pół godziny, żeby feed nie zrobił tego za mnie?"],
 ];
 
 // ---------- dane ----------
@@ -594,18 +696,60 @@ function rng(seedStr){
   return () => { h = Math.imul(h ^ h>>>16, 2246822507); h = Math.imul(h ^ h>>>13, 3266489909); return ((h ^= h>>>16) >>> 0) / 4294967296; };
 }
 function pick(arr, r){ return arr[Math.floor(r()*arr.length)]; }
-function settings(){ return Object.assign({count:4, feed:true, good:true, lupa:false, mine:true}, db.settings || {}); }
+const SURPRISE = ["k","z","t","w","p","a","o","j"];
+function settings(){ return Object.assign({count:4, wants:true, feed:true, good:true, surprise:true, echo:true, mine:false}, db.settings || {}); }
+function dayDiff(a, b){ return Math.round((parseKey(b) - parseKey(a)) / 86400000); }
+function ago(n){ return n < 7 ? n+" dni temu" : n < 14 ? "tydzień temu" : n < 21 ? "dwa tygodnie temu" : n < 45 ? "miesiąc temu" : "dawno temu"; }
+function snippet(t){ t = t.replace(/\s+/g," ").trim(); if (t.length <= 130) return t; const c = t.slice(0,130); return c.slice(0, Math.max(c.lastIndexOf(" "), 60)) + "…"; }
+// Echo: stara odpowiedź albo myśl (sprzed co najmniej 4 dni) wraca jako pytanie.
+function echoCandidates(k){
+  const cutoff = shiftKey(k,-4), out = [], used = new Set();
+  Object.values(db.evenings).forEach(e => (e.items||[]).forEach(x => { if (x.src) used.add(x.src); }));
+  Object.keys(db.evenings).filter(d => d <= cutoff).forEach(d => (db.evenings[d].items||[]).forEach((x,i) => {
+    const a = (x.a||"").trim(); if (a.length >= 25) out.push({key:"a:"+d+":"+i, day:d, text:a});
+  }));
+  db.thoughts.forEach(t => { const d = eveningKey(t.ts), a = (t.text||"").trim(); if (d <= cutoff && a.length >= 25) out.push({key:"t:"+t.id, day:d, text:a, thought:true}); });
+  return out.filter(c => !used.has(c.key));
+}
+const ECHO_ASK = ["Co dziś o tym myślę?","Co z tego zostało prawdą?","Co bym dodał albo zmienił?","Co by się musiało stać, żebym zmienił zdanie?"];
+function echoItem(c, k, r){
+  const when = ago(dayDiff(c.day, k)), ask = pick(ECHO_ASK, r);
+  const q = (c.thought ? when.charAt(0).toUpperCase()+when.slice(1)+" złapałem myśl: „" : when.charAt(0).toUpperCase()+when.slice(1)+" napisałem: „") + snippet(c.text) + "”. " + ask;
+  return {id:"echo", q, a:"", src:c.key};
+}
+// Pytania z ostatnich 3 tygodni (z zapisanych dni) nie wracają, dopóki jest z czego wybierać.
+function recentIds(k){
+  const from = shiftKey(k,-21), s = new Set();
+  Object.keys(db.evenings).forEach(d => { if (d >= from && d < k) (db.evenings[d].items||[]).forEach(x => s.add(x.id)); });
+  return s;
+}
 function drawDay(k){
-  const r = rng("wieczor-"+k), st = settings();
+  const r = rng("wieczor-"+k), st = settings(), rec = recentIds(k);
   const P = allPool(), has = g => P.some(p => p[1]===g);
-  const fixed = [st.mine && has("x") && "x", st.feed && "f", st.good && "g", st.lupa && "k"].filter(Boolean).slice(0, st.count);
-  const ids = fixed.map(g => pick(P.filter(p=>p[1]===g), r)[0]);
-  const groups = Object.keys(GROUPS).filter(g => !fixed.includes(g) && has(g));
-  while (ids.length < st.count && groups.length) {
-    const g = groups.splice(Math.floor(r()*groups.length),1)[0];
-    ids.push(pick(P.filter(p=>p[1]===g), r)[0]);
+  const out = [];
+  const take = g => {
+    let pool = P.filter(p => p[1]===g && !rec.has(p[0]));
+    if (!pool.length) pool = P.filter(p => p[1]===g);
+    const q = pick(pool, r); out.push({id:q[0], q:q[2], a:""});
+  };
+  const used = new Set();
+  const mark = g => used.add(g);
+  // Dziennik pragnień: trzy stałe pytania na początku, potem losowanie jak zwykle.
+  // L2 (żółty) jest pytaniem o feed, więc osobnego pytania o feed wtedy nie ma.
+  const target = st.wants ? Math.max(st.count, 4) : st.count;
+  if (st.wants) { ["L1","L2","L3"].forEach(id => out.push({id, q:LEGACY[id], a:""})); mark("f"); }
+  if (st.feed && !st.wants && has("f")) { take("f"); mark("f"); }
+  if (st.good && has("g")) { take("g"); mark("g"); }
+  if (st.surprise) {
+    const cands = st.echo ? echoCandidates(k) : [];
+    if (cands.length && r() < 0.4) out.push(echoItem(pick(cands, r), k, r));
+    else { const sg = SURPRISE.filter(has); if (sg.length) { const g = pick(sg, r); take(g); mark(g); } }
   }
-  return ids.map(id => ({id, q:Q[id].q, a:""}));
+  if (st.mine && has("x")) { take("x"); mark("x"); }
+  const rest = Object.keys(GROUPS).filter(g => !used.has(g) && has(g));
+  while (out.length < target && rest.length) { const g = rest.splice(Math.floor(r()*rest.length),1)[0]; take(g); }
+  const isGood = x => Q[x.id] && Q[x.id].g === "g";
+  return out.slice(0, target).sort((a,b) => (isGood(a)?1:0) - (isGood(b)?1:0));
 }
 function items(k){ const e = db.evenings[k]; return (e && e.items) ? e.items : drawDay(k); }
 function hasContent(it){ return it.some(x => (x.a && x.a.trim()) || x.skip); }
@@ -632,12 +776,12 @@ function renderEvening(){
 function renderQuestions(){
   const its = items(curDay);
   $("qs").innerHTML = its.map((x,i) => {
-    const g = Q[x.id] ? GROUPS[Q[x.id].g] : x.id.startsWith("x") ? "moje" : "wcześniejsze pytanie";
-    return `<div class="card qcard${Q[x.id] && (Q[x.id].g==="f" || Q[x.id].g==="k") ? " feed" : ""}${x.skip?" skipped":""}" data-i="${i}">
+    const g = Q[x.id] ? GROUPS[Q[x.id].g] : x.id === "echo" ? "echo" : LEGACY[x.id] ? "dziennik pragnień" : x.id.startsWith("x") ? "moje" : "wcześniejsze pytanie";
+    return `<div class="card qcard${Q[x.id] && ["f","k","a"].includes(Q[x.id].g) || x.id==="echo" ? " feed" : ""}${x.skip?" skipped":""}" data-i="${i}">
       <div class="qgroup">${i+1} · ${g}${x.skip?" · pominięte":""}</div>
       <h2>${esc(x.q)}</h2>
       <textarea rows="1" placeholder="Kilka słów…">${esc(x.a||"")}</textarea>
-      <div class="qtools">${!Q[x.id] ? "" : '<button data-act="swap">↻ inne pytanie</button>'}<button data-act="skip">${x.skip?"odpowiem":"pomiń"}</button></div>
+      <div class="qtools">${!Q[x.id] && x.id !== "echo" ? "" : '<button data-act="swap">↻ inne pytanie</button>'}<button data-act="skip">${x.skip?"odpowiem":"pomiń"}</button></div>
     </div>`;
   }).join("");
   $("qs").querySelectorAll("textarea").forEach(grow);
@@ -659,6 +803,7 @@ $("qs").addEventListener("click", e => {
     const used = new Set(its.map(y=>y.id));
     const g = Q[x.id] ? Q[x.id].g : null;
     let pool = allPool().filter(p => p[1]===g && !used.has(p[0]));
+    if (x.id === "echo") pool = allPool().filter(p => SURPRISE.includes(p[1]) && !used.has(p[0]));
     if (!pool.length) pool = allPool().filter(p => !used.has(p[0]));
     const n = pick(pool, Math.random);
     its[i] = {id:n[0], q:n[2], a:""};
@@ -798,11 +943,12 @@ function renderWeek(){
   const top = Object.entries(counts).filter(([,c]) => c >= 2).sort((a,b)=>b[1]-a[1]).slice(0,14);
   $("weekWords").innerHTML = top.length ? top.map(([t,c]) => `<span class="word">${esc(t)}<span>${c}</span></span>`).join("") : '<p class="hint" style="margin:0">Jeszcze nic się nie powtórzyło.</p>';
 
-  const group = x => Q[x.id] ? Q[x.id].g : (x.id === "L2" || x.id === "L3") ? "f" : "";
+  const group = x => Q[x.id] ? Q[x.id].g : x.id === "echo" ? "k" : (x.id === "L2" || x.id === "L3") ? "f" : "";
+  const isS = g => SURPRISE.includes(g);
   const list = (arr, empty) => arr.length ? arr.map(([k,x]) => qaHtml(k,x)).join("") : `<div class="empty">${empty}</div>`;
-  $("weekLupa").innerHTML = list(answered.filter(([,x]) => group(x)==="k"), "Brak odpowiedzi w tym tygodniu.");
+  $("weekLupa").innerHTML = list(answered.filter(([,x]) => isS(group(x))), "Brak odpowiedzi w tym tygodniu.");
   $("weekFeed").innerHTML = list(answered.filter(([,x]) => group(x)==="f"), "Brak odpowiedzi w tym tygodniu.");
-  $("weekOther").innerHTML = list(answered.filter(([,x]) => group(x)!=="k" && group(x)!=="f"), "Brak odpowiedzi w tym tygodniu.");
+  $("weekOther").innerHTML = list(answered.filter(([,x]) => !isS(group(x)) && group(x)!=="f"), "Brak odpowiedzi w tym tygodniu.");
   $("weekThoughts").innerHTML = thoughts.length ? thoughts.map(thoughtHtml).join("") : '<div class="empty">Brak myśli w tym tygodniu.</div>';
 
   document.querySelectorAll("[data-w]").forEach(t => { t.value = w[t.dataset.w] || ""; grow(t); });
@@ -864,10 +1010,14 @@ function renderExport(){
   const st = settings();
   $("setCount").innerHTML = [2,3,4,5].map(n => `<button class="chip${n===st.count?" on":""}" data-n="${n}">${n}</button>`).join("");
   $("setCount").querySelectorAll("[data-n]").forEach(b => b.onclick = () => { db.settings = Object.assign(st, {count:+b.dataset.n}); persist(); renderExport(); });
+  $("setWants").classList.toggle("on", st.wants);
+  $("setWants").onclick = () => { db.settings = Object.assign(st, {wants:!st.wants}); persist(); renderExport(); };
   $("setFeed").classList.toggle("on", st.feed);
-  $("setLupa").classList.toggle("on", st.lupa);
+  $("setSurprise").classList.toggle("on", st.surprise);
+  $("setEcho").classList.toggle("on", st.echo);
   $("setFeed").onclick = () => { db.settings = Object.assign(st, {feed:!st.feed}); persist(); renderExport(); };
-  $("setLupa").onclick = () => { db.settings = Object.assign(st, {lupa:!st.lupa}); persist(); renderExport(); };
+  $("setSurprise").onclick = () => { db.settings = Object.assign(st, {surprise:!st.surprise}); persist(); renderExport(); };
+  $("setEcho").onclick = () => { db.settings = Object.assign(st, {echo:!st.echo}); persist(); renderExport(); };
   $("setGood").classList.toggle("on", st.good);
   $("setGood").onclick = () => { db.settings = Object.assign(st, {good:!st.good}); persist(); renderExport(); };
   $("setMine").classList.toggle("on", st.mine);
@@ -899,7 +1049,7 @@ function build(){
   }
   if (exFormat === "csv-e") {
     const rows = [["data","id_pytania","grupa","pytanie","odpowiedz","pominiete"]];
-    r.days.forEach(k => db.evenings[k].items.forEach(x => rows.push([k, x.id, Q[x.id] ? GROUPS[Q[x.id].g] : "stare", x.q, x.a||"", x.skip ? "tak" : ""])));
+    r.days.forEach(k => db.evenings[k].items.forEach(x => rows.push([k, x.id, Q[x.id] ? GROUPS[Q[x.id].g] : x.id === "echo" ? "echo" : "stare", x.q, x.a||"", x.skip ? "tak" : ""])));
     return {name:`odpowiedzi-${stamp}.csv`, mime:"text/csv", body: csv(rows)};
   }
   if (exFormat === "csv-t") {
@@ -987,7 +1137,7 @@ $("remTime").onchange = () => { const r = loadRem(); applyRem({on:r.on, time:$("
 loadDb();
 migrate();
 rebuildQ();
-$("verLine").textContent = `wersja 2.3 · ${POOL.length} pytań` + (native ? "" : " · przeglądarka");
+$("verLine").textContent = `wersja 2.4 · ${POOL.length} pytań` + (native ? "" : " · przeglądarka");
 if (!native) {
   $("remCard").style.display = "none"; $("remWebNote").style.display = "block";
   const standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;

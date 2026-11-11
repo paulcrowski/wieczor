@@ -2,7 +2,7 @@
 
 [🇵🇱 Polski](README.pl.md) · 🇬🇧 English
 
-An Android app for evening questions. Each evening it draws a few questions from a pool of 145, for example:
+An Android app for evening questions. Each evening it draws a few questions from a pool of 239, for example:
 
 - When did I first pick up my phone today?
 - What did I believe today without checking?
@@ -10,7 +10,7 @@ An Android app for evening questions. Each evening it draws a few questions from
 
 You answer in a few words, or skip. It takes a couple of minutes.
 
-I built it for myself, to study how my feed shapes my day. Two questions are in every draw by default: one about the feed and one about what went well (you can change that).
+I built it for myself, to study how my feed shapes my day. By default every draw has one question about the feed, one about what went well, and one surprising one that is meant to stop you or shift your viewpoint.
 
 **Try it now (iPhone, Android, desktop):** [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/). No download, no account.
 
@@ -18,7 +18,8 @@ I built it for myself, to study how my feed shapes my day. Two questions are in 
 
 ## Features
 
-- **Evening:** 4 questions a day by default: one about the feed, one about what went well, and two from the other groups (under the lens, the world around, curiosity, people, body, attention, and more). Each question can be swapped (↻) or skipped. "+ dolosuj pytanie" adds another one. The same day always shows the same questions.
+- **Evening:** 4 questions a day by default: one about the feed, one surprising one (from another angle, scale, imagination, decisions, the algorithm, meaning, or tomorrow), one from the other groups, and one about what went well. Questions from the last three weeks do not come back. Each question can be swapped (↻) or skipped. "+ dolosuj pytanie" adds another one. The same day always shows the same questions.
+- **Echo:** now and then, instead of the surprising question, one of your own answers or thoughts from a few days ago comes back ("A week ago I wrote: …. What do I think about it today?"). It runs on the device, on your own data.
 - **Thought:** a quick note for a single thought during the day (an idea, something you read, something to add). The app icon has a "Złap myśl" (catch a thought) shortcut.
 - **History:** every day with its answers. Tap a day to edit it.
 - **Week:** the week's answers side by side, with "under the lens" and feed answers grouped. It shows words that came up at least twice. At the end there are three summary questions and a plan for next week in "when…, then…" form. The plan stays above your questions all next week, and in the next summary you mark whether it worked. On Sundays the app reminds you to do the summary.
@@ -48,7 +49,7 @@ No certificate, no App Store, no account. What the web version does **not** have
 
 ### Android (APK)
 
-1. Download `Wieczor-v2.3.apk` from the [latest release](../../releases/latest).
+1. Download `Wieczor-v2.4.apk` from the [latest release](../../releases/latest).
 2. Open the file on your phone. Android will ask for permission to install from this source.
 3. If Play Protect shows a warning, choose "Install anyway". It appears because the app is not on Google Play.
 
@@ -84,7 +85,7 @@ The web version lives in [`docs/`](docs). It is generated from the same `index.h
 
 ## Questions
 
-All 145 questions are listed in the [Polish README](README.pl.md#pytania), grouped into 11 sets: feed (20), good (20), under the lens (15), day (15), attention (13), the world around (15), people (10), mind (10), curiosity (10), body (9), small things (8). The questions are written in the masculine form, because I wrote them for myself. Feminine and neutral versions, and English ones, are on the to-do list.
+All 239 questions are listed in the [Polish README](README.pl.md#pytania), grouped into 18 sets: feed (20), good (20), under the lens (15), from another angle (16), scale (14), imagination (14), crossroads (12), algorithm (14), meaning (12), tomorrow (12), day (15), attention (13), the world around (15), people (10), mind (10), curiosity (10), body (9), small things (8). The questions are written in the masculine form, because I wrote them for myself. Feminine and neutral versions, and English ones, are on the to-do list.
 
 A few examples, translated:
 
@@ -93,6 +94,11 @@ A few examples, translated:
 - *Under the lens:* Who profits from what I watched most today?
 - *The world around:* What would I notice here today if I were in this place for the first time?
 - *Curiosity:* What did I check for myself today instead of taking it on trust?
+- *From another angle:* What would someone from 1950 not understand about today?
+- *Scale:* Which of today's news could really change something in my week?
+- *Algorithm:* What did I see today only because masses of people clicked on it?
+- *Imagination:* If I told today as a joke, what would the punchline be?
+- *Tomorrow:* Which usual route will I walk differently tomorrow?
 
 ## Licence
 

@@ -4,7 +4,7 @@
 
 Aplikacja do wieczornych pytań: na Androida (APK) i w przeglądarce (też na iPhone'a).
 
-**Wypróbuj od razu:** [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/). Bez pobierania i bez konta. Co wieczór losuje kilka pytań ze 145, na przykład:
+**Wypróbuj od razu:** [https://paulcrowski.github.io/wieczor/](https://paulcrowski.github.io/wieczor/). Bez pobierania i bez konta. Co wieczór losuje kilka pytań z puli 239, na przykład:
 
 - O której pierwszy raz wziąłem dziś telefon?
 - W co dziś uwierzyłem bez sprawdzania?
@@ -16,7 +16,9 @@ Napisałem ją dla siebie, do prywatnego badania tego, jak feed wpływa na mój 
 
 ## Co umie
 
-- **Wieczór**: domyślnie 4 pytania na dzień: jedno o feedzie, jedno o tym, co było dobre, i dwa z pozostałych grup, np. „pod lupą”, świat wokół, ciekawość, ludzie. Liczbę pytań i grupy stałe zmienisz w zakładce Więcej. Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania.
+- **Wieczór**: domyślnie 4 pytania na dzień: jedno o feedzie, jedno zaskakujące (z innej strony, skala, wyobraźnia, decyzje, algorytm, sens albo jutro), jedno z pozostałych grup i jedno o tym, co było dobre. Pytania z ostatnich trzech tygodni nie wracają. Każde da się wymienić (↻) albo pominąć. Przycisk „+ dolosuj pytanie” dodaje kolejne. Ten sam dzień ma zawsze te same pytania. Liczbę pytań i grupy stałe zmienisz w zakładce Więcej.
+- **Dziennik pragnień** (domyślnie włączony, zakładka Więcej): co wieczór na początku te same trzy pytania (czego chciałem, a nie zrobiłem; co najczęściej mi pokazywano; czy zrobiłem coś, czego feed by mi nie podsunął), potem losowane. Stałe pytania pozwalają porównać tygodnie między sobą.
+- **Echo**: czasem zamiast zaskakującego pytania wraca Twoja własna odpowiedź albo myśl sprzed kilku dni („Tydzień temu napisałem: …. Co dziś o tym myślę?”). Działa tylko na urządzeniu, na Twoich danych.
 - **Myśl**: szybki zapis jednej myśli w ciągu dnia (pomysł, coś przeczytanego, coś do dopisania). Na ikonie aplikacji jest skrót „Złap myśl”.
 - **Historia**: wszystkie dni z odpowiedziami. Dotknięcie dnia otwiera go do poprawek.
 - **Tydzień**: odpowiedzi z tygodnia obok siebie, osobno „pod lupą” i feed. Pokazuje słowa, które padły co najmniej dwa razy. Na końcu trzy pytania podsumowania i plan na kolejny tydzień w formie „kiedy…, to…”. Plan wisi potem nad pytaniami przez cały następny tydzień, a w kolejnym podsumowaniu zaznaczasz, czy wyszło. W niedzielę aplikacja przypomina o podsumowaniu.
@@ -46,7 +48,7 @@ Bez certyfikatu, bez App Store i bez konta. Czego **nie ma** w wersji webowej: p
 
 ### Android (APK)
 
-1. Pobierz `Wieczor-v2.3.apk` z [zakładki Releases](../../releases/latest).
+1. Pobierz `Wieczor-v2.4.apk` z [zakładki Releases](../../releases/latest).
 2. Otwórz plik na telefonie. Android zapyta o zgodę na instalację z tego źródła.
 3. Jeśli pojawi się ostrzeżenie Play Protect, wybierz „Zainstaluj mimo to”. Pojawia się, bo aplikacji nie ma w Sklepie Play.
 
@@ -82,7 +84,7 @@ Wersja webowa leży w [`docs/`](docs) i powstaje z tego samego `index.html`: po 
 
 ## Pytania
 
-Pytania są pisane w rodzaju męskim, bo pisałem je dla siebie. Wersja żeńska i neutralna jest na liście rzeczy do zrobienia.
+Pytania są pisane w rodzaju męskim, bo pisałem je dla siebie. Wersja żeńska i neutralna jest na liście rzeczy do zrobienia. Własne pytania dopiszesz w zakładce Więcej.
 
 ### Feed (20)
 
@@ -147,6 +149,121 @@ Pytania są pisane w rodzaju męskim, bo pisałem je dla siebie. Wersja żeńska
 - Co chciałem dziś kupić? Skąd ten pomysł?
 - Którą swoją opinię sprawdziłbym, gdybym miał na to godzinę?
 - Co dziś zrobiłem inaczej niż zwykle?
+
+### Z innej strony (16)
+
+- Co z dzisiejszego dnia ktoś bliski zapamięta inaczej niż ja?
+- Jak mój dzień opisałby ktoś, kto mnie bardzo lubi?
+- Co bym doradził koledze, który miał dziś dokładnie taki dzień jak ja?
+- Czego z dzisiejszego dnia nie zrozumiałby ktoś z roku 1950?
+- Gdzie dziś byłem tylko ciałem, a gdzie głową?
+- Gdyby ktoś nagrał mój dzień, który kawałek dałoby się oglądać?
+- Co dziś zrobiłem, co z boku wyglądałoby dziwnie?
+- Kto dziś zrobił coś dla mnie tak cicho, że prawie nie zauważyłem?
+- Co telefon mógłby o mnie powiedzieć po dzisiejszym dniu?
+- Czyj punkt widzenia dziś odrzuciłem szybciej, niż zdążyłem go wysłuchać?
+- Które moje dzisiejsze zdanie mogło zabrzmieć ostrzej, niż chciałem?
+- Co ja sprzed dziesięciu lat powiedziałby o moim dzisiejszym dniu?
+- O co ja za dziesięć lat poprosiłby mnie dzisiaj?
+- Co mnie dziś irytowało, a ktoś inny uznałby to za luksus?
+- Czego nie widzę w czyimś życiu tylko dlatego, że sam tego nie mam?
+- Czy osoba, z którą się dziś nie zgadzałem, rozpoznałaby siebie w tym, jak ją opisuję?
+
+### Skala (14)
+
+- Co mnie dziś martwiło najbardziej? Czy za rok będę o tym pamiętał?
+- Które dzisiejsze wiadomości mogą realnie zmienić coś w moim tygodniu?
+- Który dzisiejszy news dotyczył rzeczy, na którą mam wpływ?
+- Co rano wydawało się wielkie, a wieczorem już nie?
+- Co z dzisiejszego dnia będzie warte opowiedzenia za dwadzieścia lat?
+- Gdyby ten dzień był jednym zdaniem w mojej biografii, jak by brzmiało?
+- Który kawałek dzisiejszej pracy będzie ważny za pięć lat?
+- Co dziś trwało dłużej, niż potrzeba, a co krócej, niż zasługiwało?
+- Ilu ludzi dziś naprawdę spotkałem, a ilu tylko widziałem na ekranie?
+- Co dziś zrobiłem, co za rok będzie dawać procent?
+- Gdybym przeżywał ten dzień 365 razy z rzędu, kim bym się stał?
+- Jak wyglądałby świat, gdyby wszyscy spędzili dziś dzień tak jak ja?
+- Ile minut z dzisiejszego dnia chciałbym odzyskać, a ile przeżyć jeszcze raz?
+- Co dziś wydawało mi się pilne, a po godzinie okazało się nieważne?
+
+### Wyobraźnia (14)
+
+- Gdyby dzisiejszy dzień był rozdziałem książki, jak by się nazywał?
+- Gdyby jutro nikt niczego ode mnie nie chciał, co zrobiłbym najpierw?
+- Jakim zwierzęciem byłem dziś o piętnastej?
+- Jaki kolor miał dzisiejszy dzień?
+- Gdyby ten dzień miał smak, jaki?
+- Co powiedziałbym sobie dziś rano, gdybym znał wieczór?
+- Jaki zwykły przedmiot z dzisiejszego dnia zasługuje na pomnik?
+- Gdybym miał dziś jedną supermoc, w którym momencie by się przydała?
+- Który moment dzisiaj nadawałby się na scenę filmową? Kto by mnie zagrał?
+- Gdybym mógł wymazać z dzisiaj jedną godzinę i nikt by tego nie zauważył, którą?
+- Gdybym mógł dołożyć do dzisiaj jedną godzinę, na co?
+- Jakie pytanie zadałby mi ośmiolatek, który obserwował mnie cały dzień?
+- Jaki dźwięk najlepiej opisuje dzisiejszy dzień?
+- Gdybym opowiedział dzisiejszy dzień jako żart, jaka byłaby puenta?
+
+### Rozdroża (12)
+
+- Jaką decyzję odkładam, bo boję się odpowiedzi?
+- Co zrobiłbym w sprawie, która mnie dziś gryzie, gdyby nikt mnie nie oceniał?
+- Jaką sprawę dziś przerabiałem w głowie po raz trzeci, bez nowych informacji?
+- Jakiej jednej informacji brakuje mi do decyzji, która wisi?
+- Jaki najlepszy argument przeciw mojemu planowi usłyszałem albo wymyśliłem dziś?
+- Czy jest decyzja, którą już podjąłem, tylko jeszcze o tym nie powiedziałem?
+- Ile mnie kosztuje czekanie z decyzją, która wisi: czas, pieniądze, spokój?
+- Jaką decyzję mógłbym dziś podjąć w pięć minut, gdyby dało się ją cofnąć?
+- Kogo mogę zapytać o radę i jeszcze tego nie zrobiłem?
+- Co doradziłbym komuś, kogo kocham, w sprawie, która mnie dziś gryzie?
+- Co w sprawie, która wisi, jest strachem, a co zwykłym „nie chce mi się”?
+- Jaki jest najlepszy argument za tym, żeby w sprawie, która wisi, nic nie robić?
+
+### Algorytm (14)
+
+- Jakim człowiekiem feed uważa mnie po dzisiejszych kliknięciach?
+- Czego feed nie pokazał mi dziś wcale, a mógłby?
+- Gdyby mój feed był człowiekiem, jak by mnie dziś zagadał?
+- Co czułem tuż przed tym, jak dziś odruchowo sięgnąłem po telefon?
+- Co by się stało, gdybym o dzisiejszej wiadomości, która mnie poruszyła, nie wiedział przez tydzień?
+- Którą emocję feed wzbudził dziś najczęściej: lęk, złość, śmiech, zazdrość?
+- Komu opłaca się, żebym dziś czuł to, co czułem w feedzie?
+- Co dziś zobaczyłem tylko dlatego, że klikało to mnóstwo ludzi?
+- Ile z moich dzisiejszych opinii pochodzi z feedu, a ile z mojego życia?
+- Czego chciałbym, żeby feed pokazywał mi więcej? Co mogę zrobić, żeby tak było?
+- Co mogłem dziś zrobić z lękiem z wiadomości, żeby na coś się przydał?
+- Co dziś zrobiłem albo opublikowałem dla zasięgów, a nie dla siebie?
+- Jaka moja dzisiejsza opinia przetrwałaby tydzień bez internetu?
+- Kogo feed pokazał mi dziś jako wroga?
+
+### Sens (12)
+
+- Co dziś zrobiłem, co miało sens dla kogoś innego niż ja?
+- Co dziś robiłem tylko dlatego, że lubię to robić?
+- Po czym dziś poznałem, że ktoś mnie potrzebuje?
+- Co z dzisiejszego dnia chciałbym, żeby ktoś zobaczył?
+- Jaka mała rzecz mogła się dziś nie udać, a udała się dzięki mnie?
+- Co dziś zrobiłem dlatego, że uważam, że tak trzeba, a nie dlatego, że muszę?
+- Komu należy się podziękowanie, którego jeszcze nie powiedziałem?
+- Na co poszła dziś moja energia, a na co chciałbym, żeby poszła?
+- Co dziś zrobiłem zgodnie z tym, kim chcę być?
+- W którym momencie dziś byłem naprawdę obecny?
+- Co miałoby dla mnie sens, gdyby nikt tego nie zobaczył, nie polubił i nie zapłacił?
+- O co chciałbym, żeby ktoś mnie dziś zapytał?
+
+### Jutro (12)
+
+- Jedna rzecz, którą jutro zrobię inaczej, żeby zobaczyć, co się stanie?
+- Kiedy jutro sięgnę po telefon odruchowo i co zrobię zamiast tego?
+- Do kogo jutro odezwę się pierwszy, bez powodu?
+- Co jutro zrobię w pięć minut, a odkładam od tygodnia?
+- Jakie jedno pytanie zadam jutro komuś bliskiemu zamiast „jak było”?
+- Co jutro zrobię w całości bez telefonu w ręce?
+- Co jutro sprawdzę sam, zamiast przyjąć z feedu?
+- Którą zwykłą drogę jutro przejdę inną trasą?
+- Czego jutro nie zrobię, choć zwykle robię?
+- Komu jutro pomogę, zanim poprosi?
+- Co jutro powiem na głos, czego zwykle nie mówię?
+- Jak zacznę jutro pierwsze pół godziny, żeby feed nie zrobił tego za mnie?
 
 ### Świat wokół (15)
 

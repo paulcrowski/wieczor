@@ -1,5 +1,5 @@
 // Offline: wszystko jest w cache, strona nie łączy się z niczym poza własnym adresem.
-const CACHE = "wieczor-57933cc289";
+const CACHE = "wieczor-8418c177cc";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
